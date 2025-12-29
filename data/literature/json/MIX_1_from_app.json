@@ -1,0 +1,40 @@
+{
+  "paper_metadata": {
+    "title": "State-of-the-art review of energy consumption in machining operations: \nChallenges and trends",
+    "authors": [
+      "Danil Yu Pimenov",
+      "Oguzhan Derb",
+      "G.C. Manjunath Patelc",
+      "Khaled Giasind,*",
+      "Ali Ercetine"
+    ],
+    "publication_date": "2025",
+    "journal_or_conference": "Renewable and Sustainable Energy Reviews"
+  },
+  "machine_info": {
+    "machine_name": "CNC machine tools",
+    "machine_type": "grinding, turning, and milling machines",
+    "axis": "not specified",
+    "control_unit": "numerically controlled machine tools",
+    "material_processed": "not specified",
+    "process_parameters": {
+      "spindle_speed": "not specified",
+      "feed_rate": "not specified",
+      "cutting_depth": "not specified",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "not specified",
+    "power_consumption": "Constant energy (independent of machining) : When the machine starts processing, the computer fans, pumps, servo, spindle drives, and unloaded motors require energy.\nVariable energy (dependent on machining) : energy consumption due to machining action.",
+    "measurement_method": "not specified"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "Automatic machine tools reduced machining time by 60 %",
+    "other_kpis": []
+  },
+  "additional_notes": "This review article provides an overview of energy consumption and improvement in energy efficiency in various conventional machining processes by an embodied energy analysis from primary and secondary consumption sources. The article also presents challenges and future trends regarding energy consumption and control using available and emerging techniques in the manufacturing industry."
+}

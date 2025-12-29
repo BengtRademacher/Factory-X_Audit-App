@@ -1,0 +1,44 @@
+{
+  "paper_metadata": {
+    "title": "Rapid Energy Consumption Modelling for CNC Based Milling Process",
+    "authors": ["Wen-Tse Hsu", "Pang-Hsiang Hung", "Bing-He Chou", "Po-Han Chen", "Shang-Yu Lin", "Tay-Jyi Lin", "Yuh-Chung Hu", "Pei-Zen Chang", "Wei-Chang Li"],
+    "publication_date": "2024",
+    "journal_or_conference": "Procedia CIRP"
+  },
+  "machine_info": {
+    "machine_name": "not specified",
+    "machine_type": "CNC Milling (10 different machines)",
+    "axis": "not specified",
+    "control_unit": "not specified",
+    "material_processed": "S50C carbon steel (610 MPa tensile strength, 179 HB hardness)",
+    "process_parameters": {
+      "spindle_speed": "10000-12000 rpm",
+      "feed_rate": "24-48 m/min",
+      "cutting_depth": "varied",
+      "spindle_data": [
+        {"machine": "VP-6", "spindle_speed_rpm": "500-1500", "power_model": "P_spindle = 30.20 + 0.14n"},
+        {"machine": "VP-6", "spindle_speed_rpm": "1500-4000", "power_model": "P_spindle = 293.42 - 0.04n"},
+        {"machine": "VP-6", "spindle_speed_rpm": "4000-10000", "power_model": "P_spindle = 1342.63 - 0.32n + 3.44e-5n² - 1.18e-9n³"}
+      ],
+      "feeding_data": [
+        {"axis": "X/Y/Z", "power_model": "P_feed = b₀ + b₁v_f", "experiments_required": 3}
+      ]
+    }
+  },
+  "energy_data": {
+    "energy_usage": "",
+    "power_consumption": "Standby power: 285-887 W across 10 machines, Cutting power: P_cutting = 0.037n^0.222 v_f^0.759 a_p^0.9 a_e^1.109",
+    "measurement_method": "Magnetic voltage sensors (HIOKI 9804-01) + current transducers (CYBER HCP8150), NI data acquisition at 12800 Hz sampling"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "",
+    "CO2_emissions": "",
+    "efficiency": "Average prediction error: 3.98% across 10 machines",
+    "other_kpis": [
+      "modelling_time: 30 minutes total (15 minutes sensor installation)",
+      "experiments_reduced: 7 cutting experiments (from typical 9-27)",
+      "prediction_error_range: 0.22-8.22% across machines"
+    ]
+  },
+  "additional_notes": "Novel rapid modelling approach using magnetic sensors that require no machine modification. Uses modified Taguchi method to reduce required experiments. NC code parameter extraction automated via Python. Open-source data and code available on GitHub. Validated on 10 different CNC milling machines with varying specifications."
+}

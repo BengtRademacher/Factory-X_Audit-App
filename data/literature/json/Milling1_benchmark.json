@@ -1,0 +1,98 @@
+{
+  "paper_metadata": {
+    "title": "Experimental characterization of energy consumption in 5-axis milling machine and developing optimization strategy",
+    "authors": ["Sunil Kumar Maurya", "Gianni Campatelli", "Massimo Veracini"],
+    "publication_date": "2024",
+    "journal_or_conference": "Procedia CIRP"
+  },
+  "machine_info": {
+    "machine_name": "GF AgieCharmilles Mikron HPM 800U HD 5-axis High Performance Machining Center",
+    "machine_type": "5-axis High Performance Machining Center",
+    "axis": "Five Axis",
+    "control_unit": "Heidenhain iTNC 530",
+    "material_processed": "A182 F22 Alloy Steel",
+    "tool_info": {
+      "tool_type": "MULTI-MASTER solid carbide head tool from ISCAR",
+      "treatment": "TiAlN",
+      "diameter": "20 mm",
+      "number_of_teeth": 4
+    },
+    "process_parameters": {
+      "cutting_velocity_range_m_min": [120, 180],
+      "radial_engagement_range_mm": [4, 20],
+      "axial_engagement_range_mm": [1, 2],
+      "feed_per_tooth_range_mm": [0.12, 0.18],
+      "feed_speed_range_mm_min": [1146, 1720],
+      "spindle_speed_range_rpm": [1911, 2866]
+    }
+  },
+  "energy_data": {
+    "total_energy_breakdown": {
+      "base_system": {
+        "power_w": 2011.43,
+        "energy_kwh_per_hour": 2.011,
+        "contribution": "14.9%"
+      },
+      "refrigeration": {
+        "power_w": 2819.43,
+        "energy_kwh_per_hour": 2.819,
+        "contribution": "20.9%"
+      },
+      "chip_conveyor": {
+        "power_w": 3694.37,
+        "energy_kwh_per_hour": 3.694,
+        "contribution": "27.4%"
+      },
+      "tool_changer": {
+        "power_w": 191.96,
+        "energy_kwh_per_hour": 0.0111,
+        "contribution": "1.4%",
+        "cycle_time": "1 change every 10 minutes"
+      },
+      "oil_mist": {
+        "power_w": 320.78,
+        "energy_kwh_per_hour": 0.320,
+        "contribution": "2.4%"
+      },
+      "coolant": {
+        "power_w": 1158.21,
+        "energy_kwh_per_hour": 1.158,
+        "contribution": "8.6%"
+      },
+      "material_removal_process": {
+        "power_w": 3287.00,
+        "energy_kwh_per_hour": 3.287,
+        "contribution": "24.4%"
+      }
+    },
+    "machine_states_power_consumption": {
+      "standby_power_kw": 1.734,
+      "shutdown_power_kw": 0,
+      "power_up_from_standby": {
+        "time_sec": 35,
+        "mean_power_kw": 1.988,
+        "energy_consumption_kwh": 0.01932
+      },
+      "power_up_from_shutdown": {
+        "time_sec": 360,
+        "mean_power_kw": 4.413,
+        "energy_consumption_kwh": 0.4413
+      }
+    },
+    "axis_movement_power_consumption": {
+      "idle_power_kw": 3.06,
+      "x_axis_avg_power_kw": 3.95,
+      "y_axis_avg_power_kw": 3.75,
+      "difference_percentage": "-0.6% to -1.2%"
+    },
+    "measurement_method": "Split core clamp-on power probes (10mA to 100A range) + NI-DAQ simultaneous sampling card and NI-9215 for acquisition"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption_range_kj_mm3": [0.430, 1.652],
+    "material_removal_rate_range_mm3_s": [143.312, 809.236],
+    "efficiency_observation": "SEC is inversely proportional to MRR. Higher MRR leads to lower SEC.",
+    "auxiliary_systems_contribution": "75.6% of total energy consumed by auxiliary systems",
+    "chip_conveyor_optimization_potential": "Up to 90% energy reduction possible with duty cycle implementation"
+  },
+  "additional_notes": "Study highlights the significant contribution of auxiliary systems to total energy consumption. Optimization strategies include duty cycle implementation for chip conveyor and smart scheduling for machine state management. RSM used for parameter optimization. Machine-specific characteristics important for energy consumption analysis."
+}

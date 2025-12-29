@@ -1,0 +1,45 @@
+{
+  "paper_metadata": {
+    "title": "Towards Sustainable Grinding \nof\u00a0Difficult -to-Cut Alloys\u2014A Holistic Review \nand\u00a0Trends",
+    "authors": [
+      "Ning Qian",
+      "Jiajia Chen",
+      "Aqib Mashood Khan",
+      "Biao Zhao",
+      "Yurong Chen",
+      "Wenfeng Ding",
+      "Yucan Fu",
+      "Jiuhua Xu"
+    ],
+    "publication_date": "2024",
+    "journal_or_conference": "Chinese Journal of Mechanical Engineering"
+  },
+  "machine_info": {
+    "machine_name": "MK 1080 centerless grinding machine",
+    "machine_type": "Grinding Machine",
+    "axis": "not specified",
+    "control_unit": "CNC machine",
+    "material_processed": "45-gauge steel, DZ125 superalloy, Ti-6Al-4V alloy, K4125 and Inconel718 nickel-based superalloys, stainless steel",
+    "process_parameters": {
+      "spindle_speed": "not specified",
+      "feed_rate": "not specified",
+      "cutting_depth": "0.2 mm",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "not specified",
+    "power_consumption": "grinding power ranges from 1.1 to 1.2\u00a0kW; the power consumed by coolant delivery rises from 0.2 up to 7.8\u00a0kW; and the power lost caused by the coolant increases from 0.2 up to 3.2\u00a0kW",
+    "measurement_method": "not specified"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "the specific energy of hard turning of 4319 steel with 60 HRC is under 10\u00a0J/mm3, while the specific energy of grinding the same material ranges from 40 to 90\u00a0J/mm3",
+    "CO2_emissions": "12000\u00a0kg/year carbon emission",
+    "efficiency": "Product Sustainability Index (PSI) of grinding with MQL is 46.06% more sustainable",
+    "other_kpis": [
+      "MQL machining has the potential to save up to 15% of the cost."
+    ]
+  },
+  "additional_notes": "This paper provides a holistic review of sustainability in grinding difficult-to-cut alloys, encompassing current trends and future directions, focusing on reducing hazardous coolant, energy consumption, and carbon emissions."
+}

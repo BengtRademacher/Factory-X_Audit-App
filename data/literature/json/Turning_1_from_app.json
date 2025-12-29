@@ -1,0 +1,45 @@
+{
+  "paper_metadata": {
+    "title": "Energy Efficiency in Turning: A Comparative Analysis of Screw Drive and Linear Drive CNC Machine Tools",
+    "authors": [
+      "Agnieszka Terelak-Tymczyna",
+      "Krzysztof Marchelek",
+      "Ryszard Daniel Zi\u02dbetek",
+      "Pawe\u0142 Frankowski",
+      "Agata Zubkiewicz",
+      "Karol Mi \u02dbadlicki"
+    ],
+    "publication_date": "27 December 2024",
+    "journal_or_conference": "Materials"
+  },
+  "machine_info": {
+    "machine_name": "DMG CTX 310 eco, CNC CTX 420 Linear",
+    "machine_type": "CNC lathes",
+    "axis": "not specified",
+    "control_unit": "not specified",
+    "material_processed": "aluminum rod, chrome \u2013nickel steel",
+    "process_parameters": {
+      "spindle_speed": "5000 rpm (DMG CTX 310 eco), 4000 rpm (CTX 420 Linear)",
+      "feed_rate": "not specified",
+      "cutting_depth": "not specified",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "not specified",
+    "power_consumption": "Standby, Spindle, and each Axis: See tables for values during operations and idle.",
+    "measurement_method": "Lumel ND 20 logger, 75 A current transformers with a current output 1 A, according to IEC60044-Accuracy Class 3, 0.5 VA, voltage measured directly."
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "Compensation can lead to power consumption reductions of 23\u201330% for screw drives and up to 36\u201347% for linear drives.",
+    "other_kpis": [
+      "During machining/processing, the tan\u03d5 value fluctuated from level 1.13 to 1.27 for DMG CTX 310 Eco.",
+      "For machine tools with linear drives, individual compensation provided for a significant reduction in reactive energy consumption from the level of 8 kVar to the level of almost 2 kVar.",
+      "The lathe with linear drives consumed 130% more reactive power during idle operation compared to the lathe with screw drives."
+    ]
+  },
+  "additional_notes": "The paper presents a comparative analysis of energy efficiency in turning operations between CNC machine tools equipped with screw drives and linear drives, focusing on active and reactive energy consumption and the potential of reactive power compensation."
+}

@@ -1,0 +1,40 @@
+{
+  "paper_metadata": {
+    "title": "Energy efficiency of state -of-the-art grinding processes",
+    "authors": [
+      "M. Hacksteiner",
+      "H. Peherstorfer",
+      "F. Bleicher"
+    ],
+    "publication_date": "2018",
+    "journal_or_conference": "Procedia Manufacturing"
+  },
+  "machine_info": {
+    "machine_name": "GST FSM 400 -200 HIGH SPEED",
+    "machine_type": "CNC grinding machine",
+    "axis": "horizontal -surface",
+    "control_unit": "CNC",
+    "material_processed": "carbon steel and hardened cold -work steel",
+    "process_parameters": {
+      "spindle_speed": "up to 10 000 rpm",
+      "feed_rate": "up to 200 m/min",
+      "cutting_depth": "not specified",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "In 2005, U.S. energy consumption due to grinding in manufacturing was estimated to be 17.6 TWh",
+    "power_consumption": "Spindle: 35 kW main spindle, Cooling lubricant pump: 18.5 kW for cooling lubrication and 11 kW for wheel cleaning",
+    "measurement_method": "Electrical power consumption of the whole machine, the drive system and different peripherals (such as cooling lubricant pumps, machine cooling system and mist separator) was measured and recorded with a temporal resolution of 100 ms using power monitoring devices and an Ethernet based data acquisition system."
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "ranging from around 3 00 to 12 000 J/mm\u00b3",
+    "CO2_emissions": "not specified",
+    "efficiency": "energetic process efficiency values were determined from values averaged over the whole process (i.e. not only during tool engagement) according to equation 3. The highest efficiency values occur for the highest values of \ud835\udc44\ud835\udc44\u2019\ud835\udc64\ud835\udc64 and \ud835\udc63\ud835\udc63\ud835\udc50\ud835\udc50 which is attributable to the fact that the cutting force (and thus process power) rises with increasing feed rate and cutting speed.",
+    "other_kpis": [
+      "Compressed air consumption was quantified as about 1.2 Nm\u00b3/min during processing and 0.4 Nm\u00b3/min (at 6 bar) in \u2018operational\u2019 condition"
+    ]
+  },
+  "additional_notes": "This paper presents an energetic evaluation of a modern CNC grinding machine and different grinding strategies, determining energy flows in different operating conditions and the characteristic power consumption of different machine components to evaluate the specific energy consumption of different grinding processes."
+}

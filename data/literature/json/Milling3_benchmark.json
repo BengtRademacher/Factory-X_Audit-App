@@ -1,0 +1,115 @@
+{
+  "paper_metadata": {
+    "title": "Modeling of Energy Consumption in Milling Process to Assess their Environmental Impact",
+    "authors": ["Peng Liang","Vasanth Kumaran Ashok Kumar"],
+    "publication_date": "2023",
+    "journal_or_conference": "Master's Thesis, KTH Royal Institute of Technology"
+  },
+  "machine_info": {
+    "machine_name": "AFM Defum R1000 Three Axis Vertical Milling Center",
+    "machine_type": "Three Axis Vertical Milling Center",
+    "axis": "Three Axis (X, Y, Z)",
+    "control_unit": "Siemens Sinumerik 828D CNC Controller",
+    "material_processed": "low-alloy steel (SS2541)",
+    "tool_info": [
+      {
+        "tool_type": "End Mill for Medium Roughing",
+        "diameter_mm": 8,
+        "number_of_teeth": 4,
+        "helix_angle_degrees": 45,
+        "radial_rake_angle_degrees": 10.5
+      },
+      {
+        "tool_type": "End Mill for Heavy Roughing",
+        "diameter_mm": 10,
+        "number_of_teeth": 3,
+        "helix_angle_degrees": 30,
+        "radial_rake_angle_degrees": 9
+      },
+      {
+        "tool_type": "End Mill for Heavy Roughing",
+        "diameter_mm": 12,
+        "number_of_teeth": 3,
+        "helix_angle_degrees": 30,
+        "radial_rake_angle_degrees": 9
+      }
+    ],
+    "process_parameters": {
+      "cutting_speed_range_m_min": [
+        98.5,
+        175
+      ],
+      "feed_per_tooth_range_mm_rev": [
+        0.0208,
+        0.111
+      ],
+      "axial_depth_of_cut_range_mm": [
+        1.5,
+        5
+      ],
+      "radial_depth_of_cut_range_mm": [
+        2,
+        10
+      ],
+      "spindle_speed_range_rpm": [
+        3050,
+        6760
+      ],
+      "feed_rate_range_mm_min": [
+        557,
+        1550
+      ],
+      "machining_condition": "Dry milling without coolant"
+    }
+  },
+  "energy_data": {
+    "machine_states_power_consumption": {
+      "idle_power_w": {
+        "mean": 275.76,
+        "standard_deviation": 5.99
+      },
+      "spindle_air_cutting_power_w": {
+        "description": "Power consumed by the spindle when not engaged with the workpiece, dependent on spindle speed.",
+        "range_w": [
+          43.86,
+          932.37
+        ],
+        "rpm_range": [
+          500,
+          8000
+        ]
+      }
+    },
+    "axis_movement_power_consumption": {
+      "model_description": "Linear models to predict power consumption based on feed rate (Vf).",
+      "x_axis_model_w": "Px = 0.013841 * Vfx - 2.1726",
+      "y_axis_model_w": "Py = 0.025227 * Vfy - 0.63462",
+      "note": "Hysteresis was observed in the Y-axis power consumption, where forward feed consumed less power than reverse feed."
+    },
+    "measurement_method": "Total machine power was measured with a Yokogawa WT500 power analyzer (1 Hz sampling rate). Spindle and axis power were recorded independently using the Siemens Sinumerik 828D's Trace function (0.003s sampling rate for active power)."
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption_range_wh_cm3": [
+      0.954,
+      2.024
+    ],
+    "material_removal_rate_range_cm3_min": [
+      9.3,
+      27.9
+    ],
+    "environmental_impact_contribution": {
+      "solid_end_mill_finding": "The consumption of solid cemented carbide end mills is the dominant source of environmental impact, contributing 98% to 99% of the total.",
+      "inserted_cutter_simulation": "A simulation using inserted cutters showed a more balanced contribution, with the cutters accounting for 54% and electricity for 46% of the impact."
+    }
+  },
+  "mitigation_strategies": {
+    "summary": "The study suggests that the most viable strategies for mitigating the environmental impact in the studied milling processes involve the cutting tools rather than electricity consumption.",
+    "strategies": [
+      "Extending tool life",
+      "Using reconditioned tools to reduce the need for manufacturing new ones",
+      "Employing inserted cutters, which only require replacing the cutting edge instead of the entire tool",
+      "Selecting smaller tools when possible, as a comparison showed a 10mm end mill had a lower g CO2-eq/FU than a 12mm one for the same MRR."
+    ]
+  },
+  "additional_notes": "This thesis presents a framework to model energy consumption and assess the environmental impact of dry milling processes using a simplified experimental approach based on mechanistic modeling principles. A key finding is that for dry milling with solid tools, the environmental impact is dominated by the tool's lifecycle emissions, not the electricity consumed during the process. The proposed prediction model demonstrated good accuracy, though it tends to underestimate cutting power due to factors like unmodeled efficiency losses and tool wear."
+}

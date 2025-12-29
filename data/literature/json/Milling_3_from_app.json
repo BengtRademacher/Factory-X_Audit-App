@@ -1,0 +1,134 @@
+{
+  "paper_metadata": {
+    "title": "Modeling of Energy Consumption in Milling Process to Assess their Environmental Impact",
+    "authors": [
+      "Peng Liang",
+      "Vasanth Kumaran Ashok Kumar"
+    ],
+    "publication_date": "2023",
+    "journal_or_conference": "Master\u2019s Thesis"
+  },
+  "machine_info": {
+    "machine_name": "AFM Defum R1 000",
+    "machine_type": "Three Axis Vertical Milling Center",
+    "axis": "X, Y, Z",
+    "control_unit": "Siemens Sinumerik 828D CNC Controller",
+    "material_processed": "low-alloy steel (SS2541)",
+    "process_parameters": {
+      "spindle_speed": "Experiments used spindle speeds ranging from 3500 rpm to 7000 rpm.",
+      "feed_rate": " Experiments used feed rates: 300, 1000, and 3000 mm/min.",
+      "cutting_depth": "Radial depth of cut (ae): 0.5 to 4 mm, Axial depth of cut (ap): 0.5 to 4 mm",
+      "spindle_data": [
+        {
+          "spindle_speed_rpm": 500,
+          "measured_power_w": 43.86
+        },
+        {
+          "spindle_speed_rpm": 1000,
+          "measured_power_w": 245.78
+        },
+        {
+          "spindle_speed_rpm": 1500,
+          "measured_power_w": 370.77
+        },
+        {
+          "spindle_speed_rpm": 2000,
+          "measured_power_w": 379.34
+        },
+        {
+          "spindle_speed_rpm": 2500,
+          "measured_power_w": 362.21
+        },
+        {
+          "spindle_speed_rpm": 3000,
+          "measured_power_w": 376.3
+        },
+        {
+          "spindle_speed_rpm": 3500,
+          "measured_power_w": 407.71
+        },
+        {
+          "spindle_speed_rpm": 4000,
+          "measured_power_w": 452.58
+        },
+        {
+          "spindle_speed_rpm": 4500,
+          "measured_power_w": 512.73
+        },
+        {
+          "spindle_speed_rpm": 5000,
+          "measured_power_w": 546.08
+        },
+        {
+          "spindle_speed_rpm": 5500,
+          "measured_power_w": 594.18
+        },
+        {
+          "spindle_speed_rpm": 6000,
+          "measured_power_w": 638.05
+        },
+        {
+          "spindle_speed_rpm": 6500,
+          "measured_power_w": 697.83
+        },
+        {
+          "spindle_speed_rpm": 7000,
+          "measured_power_w": 767.38
+        },
+        {
+          "spindle_speed_rpm": 7500,
+          "measured_power_w": 843.34
+        },
+        {
+          "spindle_speed_rpm": 8000,
+          "measured_power_w": 932.37
+        }
+      ],
+      "feeding_data": [
+        {
+          "feed_velocity_mm_min": 372,
+          "x_axis_power_w": 2.44,
+          "y_axis_power_w": 3.76,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 621,
+          "x_axis_power_w": 5.35,
+          "y_axis_power_w": 6.45,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 1120,
+          "x_axis_power_w": 14.16,
+          "y_axis_power_w": 11.66,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 1370,
+          "x_axis_power_w": 18.62,
+          "y_axis_power_w": 14.2,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        }
+      ]
+    }
+  },
+  "energy_data": {
+    "energy_usage": "Experiments are based on laboratory measurements and model estimations. Specific values depend on the chosen parameters.",
+    "power_consumption": "Idle power: 275.76 W, Axis power is based on linear regressions, Spindle Power ranges from 43.86 W to 932.37 W depending on RPM, Cutting Power varies with parameters.",
+    "measurement_method": "Yokogawa WT500 power analyzer, Trace function on Siemens Sinumerik 828D CNC controller"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "Ranges depending on cutting parameters, approximately 1.333 Wh/cm3 for face milling example.",
+    "CO2_emissions": "Ranges depending on electricity source, approximately 3.9 g CO2-eq per functional unit for face milling example.",
+    "efficiency": "Model precision fluctuates depending on parameters, e.g. cutting depth, milling method and MRR.  Error of cutting power, \ud835\udc43\ud835\udc50\ud835\udc62\ud835\udc61\ud835\udc61\ud835\udc56\ud835\udc5b\ud835\udc54 is displayed in cut #12 (ap = 3 mm, ae = 10 mm, down-milling), where the model underestimates by -7.4 %.",
+    "other_kpis": [
+      "Average idle power is 275.76 W.",
+      "The cutting tool consumption contributes 98 % to 99 % of the total environmental impact in face milling process."
+    ]
+  },
+  "additional_notes": "The paper focuses on developing a method for creating a dry milling energy consumption model based on mechanistic modeling principles to assess the environmental impact, specifically the indirect GHG emissions, of milling processes. The key contribution is a practical framework for assessing the environmental impact and providing insights for energy efficiency improvements."
+}

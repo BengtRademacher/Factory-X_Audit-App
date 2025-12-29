@@ -1,0 +1,43 @@
+{
+  "paper_metadata": {
+    "title": "Energy ef \ufb01cient machine tools",
+    "authors": [
+      "Berend Denkena",
+      "Eberhard Abele",
+      "Christian Brecher",
+      "Marc-Andr /C19e Dittrich",
+      "Sami Kara",
+      "Masahiko Mori"
+    ],
+    "publication_date": "31 July 2020",
+    "journal_or_conference": "CIRP Annals - Manufacturing Technology"
+  },
+  "machine_info": {
+    "machine_name": "not specified",
+    "machine_type": "metal cutting machine tools",
+    "axis": "rotary and feed axes",
+    "control_unit": "performance and information controls as part of the machine control system",
+    "material_processed": "not specified",
+    "process_parameters": {
+      "spindle_speed": "not specified",
+      "feed_rate": "not specified",
+      "cutting_depth": "not specified",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "not specified",
+    "power_consumption": "Power demand PTotal is chosen as input for energy ef \ufb01ciency calculation; the spindle power demand PSpindle is selected as useful output.",
+    "measurement_method": "power measurements"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "not specified",
+    "other_kpis": [
+      "Increase in energy ef \ufb01ciency is achieved by maximising the cutting performance while at the same time minimising the overall power demand of the machine tool."
+    ]
+  },
+  "additional_notes": "The paper provides an overview of current machine- and process-related measures to improve the energy ef \ufb01ciency of metal cutting machine tools, focusing on design measures, energy-efficient operation, and available energy efficiency options in the machine tool industry."
+}

@@ -1,0 +1,225 @@
+[
+  {
+    "id": "Grinding_1_from_app",
+    "title": "Energy efficiency of state -of-the-art grinding processes",
+    "authors": [
+      "M. Hacksteiner",
+      "H. Peherstorfer",
+      "F. Bleicher"
+    ],
+    "date": "2018",
+    "json_path": "data\\literature\\json\\Grinding_1_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Grinding_2_from_app",
+    "title": "Towards Sustainable Grinding \nof Difficult -to-Cut Alloys—A Holistic Review \nand Trends",
+    "authors": [
+      "Ning Qian",
+      "Jiajia Chen",
+      "Aqib Mashood Khan",
+      "Biao Zhao",
+      "Yurong Chen",
+      "Wenfeng Ding",
+      "Yucan Fu",
+      "Jiuhua Xu"
+    ],
+    "date": "2024",
+    "json_path": "data\\literature\\json\\Grinding_2_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_1_from_app",
+    "title": "Experimental characterization of energy consumption in 5 -axis milling machine and developing optimization strategy",
+    "authors": [
+      "Sunil Kumar Maurya",
+      "Gianni Campatelli",
+      "Massimo Veracini"
+    ],
+    "date": "2024",
+    "json_path": "data\\literature\\json\\Milling_1_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_2_from_app",
+    "title": "Machine-Specific Estimation of Milling Energy Consumption in Detailed Design",
+    "authors": [
+      "Till Boettjer",
+      "Johan Thoft Krogshave",
+      "Devarajan Ramanujan"
+    ],
+    "date": "February 2021",
+    "json_path": "data\\literature\\json\\Milling_2_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_3_from_app",
+    "title": "Modeling of Energy Consumption in Milling Process to Assess their Environmental Impact",
+    "authors": [
+      "Peng Liang",
+      "Vasanth Kumaran Ashok Kumar"
+    ],
+    "date": "2023",
+    "json_path": "data\\literature\\json\\Milling_3_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_4_from_app",
+    "title": "Energy ef ﬁcient machine tools",
+    "authors": [
+      "Berend Denkena",
+      "Eberhard Abele",
+      "Christian Brecher",
+      "Marc-Andr /C19e Dittrich",
+      "Sami Kara",
+      "Masahiko Mori"
+    ],
+    "date": "31 July 2020",
+    "json_path": "data\\literature\\json\\Milling_4_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_5_from_app",
+    "title": "An Energy Consumption Estimation Method for the Tool Setting Process in CNC Milling Based on the Modular Arrangement of Predetermined Time Standards",
+    "authors": [
+      "Zhaohui Feng",
+      "Xinru Ding",
+      "Hua Zhang",
+      "Ying Liu",
+      "Wei Yan",
+      "Xiaoli Jiang"
+    ],
+    "date": "12 October 2023",
+    "json_path": "data\\literature\\json\\Milling_5_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_6_from_app",
+    "title": "Rapid Energy Consumption Model ling for CNC Based Milling Process",
+    "authors": [
+      "Wen -Tse Hsu",
+      "Pang -Hsiang Hung",
+      "Bing-He Chou",
+      "Po-Han Chen",
+      "Shang- Yu Lin",
+      "Tay-Jyi Lin",
+      "Yuh -Chung Hu",
+      "Pei- Zen Chang",
+      "Wei-Chang Lia"
+    ],
+    "date": "2024",
+    "json_path": "data\\literature\\json\\Milling_6_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling_7_from_app",
+    "title": "Key performance indicators for assessing inherent energy performance of machine tools in industries",
+    "authors": [
+      "Junbo Tuo",
+      "Fei Liu",
+      "Peiji Liu"
+    ],
+    "date": "August 2018",
+    "json_path": "data\\literature\\json\\Milling_7_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "MIX_1_from_app",
+    "title": "State-of-the-art review of energy consumption in machining operations: \nChallenges and trends",
+    "authors": [
+      "Danil Yu Pimenov",
+      "Oguzhan Derb",
+      "G.C. Manjunath Patelc",
+      "Khaled Giasind,*",
+      "Ali Ercetine"
+    ],
+    "date": "2025",
+    "json_path": "data\\literature\\json\\MIX_1_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Turning_1_from_app",
+    "title": "Energy Efficiency in Turning: A Comparative Analysis of Screw Drive and Linear Drive CNC Machine Tools",
+    "authors": [
+      "Agnieszka Terelak-Tymczyna",
+      "Krzysztof Marchelek",
+      "Ryszard Daniel Zi˛etek",
+      "Paweł Frankowski",
+      "Agata Zubkiewicz",
+      "Karol Mi ˛adlicki"
+    ],
+    "date": "27 December 2024",
+    "json_path": "data\\literature\\json\\Turning_1_from_app.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling1_benchmark",
+    "title": "Benchmark: Milling1_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling1_benchmark.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling2_benchmark",
+    "title": "Benchmark: Milling2_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling2_benchmark.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling3_benchmark",
+    "title": "Benchmark: Milling3_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling3_benchmark.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling4_benchmark",
+    "title": "Benchmark: Milling4_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling4_benchmark.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling5_benchmark",
+    "title": "Benchmark: Milling5_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling5_benchmark.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling6_benchmark",
+    "title": "Benchmark: Milling6_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling6_benchmark.json",
+    "pdf_path": null
+  },
+  {
+    "id": "Milling7_benchmark",
+    "title": "Benchmark: Milling7_benchmark.json",
+    "authors": [
+      "Manual"
+    ],
+    "date": "N/A",
+    "json_path": "data\\literature\\json\\Milling7_benchmark.json",
+    "pdf_path": null
+  }
+]

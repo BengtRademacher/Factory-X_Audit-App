@@ -1,0 +1,38 @@
+{
+  "paper_metadata": {
+    "title": "Machine-Specific Estimation of Milling Energy Consumption in Detailed Design",
+    "authors": [
+      "Till Boettjer",
+      "Johan Thoft Krogshave",
+      "Devarajan Ramanujan"
+    ],
+    "publication_date": "February 2021",
+    "journal_or_conference": "Journal of Manufacturing Science and Engineering"
+  },
+  "machine_info": {
+    "machine_name": "Chevalier QP2040-L (MT1) and Leadwell MCV-OP (MT2)",
+    "machine_type": "3-axis vertical milling machine",
+    "axis": "3-axis",
+    "control_unit": "not specified",
+    "material_processed": "Aluminum 6082",
+    "process_parameters": {
+      "spindle_speed": "Values ranged, see tables 7 & 8 in Appendix.",
+      "feed_rate": "Values ranged, see tables 7 & 8 in Appendix.",
+      "cutting_depth": "Values ranged, see tables 7 & 8 in Appendix.",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "Estimated and measured energy consumption values are provided and compared for basic, idle, milling, and total energy consumption. See Table 4 for specific values.",
+    "power_consumption": "Idle power consumption (Puplciidle) for MT1: 9673.1 W and MT2: 4853.6 W.\nBasic power consumption (Puplcibasic) for MT1 and MT2: 3750.0 W.",
+    "measurement_method": "An SCT013-000 hall effect current sensor was used to measure the apparent power consumption at the main supply line for MT1 and MT2. Apparent power consumption was computed as the product of the root mean square value of the measured current (400 samples per cycle) and a fixed supply voltage of 230 V. The current measurement was made on a single phase as the system was assumed to be well balanced."
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "Reduction in estimation errors for basic, idle, and milling energy consumption achieved by the adjusted UPLCI model compared to the UPLCI model. The maximum nominal estimation error for idle energy consumption was for MT1 and MT2 were 25% (VP2) and 49% (VP2) respectively. The maximum nominal estimation error for basic energy consumption was for MT1 and MT2 were 27% (VP3) and 68% (VP1) respectively. With regards to milling energy consumption, the maximum estimation error was 16% (VP2) and 37% (VP1) for MT1 and MT2 respectively.",
+    "other_kpis": []
+  },
+  "additional_notes": "This paper presents a methodology for machine-specific energy estimation in milling processes at the detailed design stage based on the unit process life cycle inventory (UPLCI) model, with adjustments for machine tool specifications and workpiece material properties to improve estimation accuracy."
+}

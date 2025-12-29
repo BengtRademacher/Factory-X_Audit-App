@@ -147,11 +147,7 @@ cython_debug/
 .streamlit/secrets.toml
 
 # Project specific
-data/
+data/working/
 exports/
 *.zip
-*.pdf
-*.json
-!src/core/json_schema.py
-!src/config/prompts.py
 

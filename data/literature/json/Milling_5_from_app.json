@@ -1,0 +1,159 @@
+{
+  "paper_metadata": {
+    "title": "An Energy Consumption Estimation Method for the Tool Setting Process in CNC Milling Based on the Modular Arrangement of Predetermined Time Standards",
+    "authors": [
+      "Zhaohui Feng",
+      "Xinru Ding",
+      "Hua Zhang",
+      "Ying Liu",
+      "Wei Yan",
+      "Xiaoli Jiang"
+    ],
+    "publication_date": "12 October 2023",
+    "journal_or_conference": "Energies"
+  },
+  "machine_info": {
+    "machine_name": "XH714D",
+    "machine_type": "three-axis machining center",
+    "axis": "three-axis",
+    "control_unit": "not specified",
+    "material_processed": "aluminum",
+    "process_parameters": {
+      "spindle_speed": "700 r/min",
+      "feed_rate": "vx1=500 mm/min, vx2=1500 mm/min, vy1=500 mm/min, vy2=1500 mm/min, vz+=1500 mm/min, vz-=500 mm/min",
+      "cutting_depth": "not specified",
+      "spindle_data": [
+        {
+          "spindle_speed_rpm": 250,
+          "measured_power_w": 107
+        },
+        {
+          "spindle_speed_rpm": 300,
+          "measured_power_w": 115
+        },
+        {
+          "spindle_speed_rpm": 350,
+          "measured_power_w": 122
+        },
+        {
+          "spindle_speed_rpm": 400,
+          "measured_power_w": 125
+        },
+        {
+          "spindle_speed_rpm": 450,
+          "measured_power_w": 131
+        },
+        {
+          "spindle_speed_rpm": 500,
+          "measured_power_w": 141
+        },
+        {
+          "spindle_speed_rpm": 550,
+          "measured_power_w": 138
+        },
+        {
+          "spindle_speed_rpm": 600,
+          "measured_power_w": 154
+        },
+        {
+          "spindle_speed_rpm": 650,
+          "measured_power_w": 166
+        },
+        {
+          "spindle_speed_rpm": 700,
+          "measured_power_w": 183
+        },
+        {
+          "spindle_speed_rpm": 750,
+          "measured_power_w": 200
+        }
+      ],
+      "feeding_data": [
+        {
+          "feed_velocity_mm_min": 500,
+          "x_axis_power_w": 26,
+          "y_axis_power_w": 8,
+          "z_axis_power_w_plus": 35,
+          "z_axis_power_w_minus": 6
+        },
+        {
+          "feed_velocity_mm_min": 1000,
+          "x_axis_power_w": 32,
+          "y_axis_power_w": 12,
+          "z_axis_power_w_plus": 45,
+          "z_axis_power_w_minus": 8
+        },
+        {
+          "feed_velocity_mm_min": 1500,
+          "x_axis_power_w": 36,
+          "y_axis_power_w": 13,
+          "z_axis_power_w_plus": 53,
+          "z_axis_power_w_minus": 10
+        },
+        {
+          "feed_velocity_mm_min": 2000,
+          "x_axis_power_w": 41,
+          "y_axis_power_w": 17,
+          "z_axis_power_w_plus": 61,
+          "z_axis_power_w_minus": 13
+        },
+        {
+          "feed_velocity_mm_min": 2500,
+          "x_axis_power_w": 46,
+          "y_axis_power_w": 30,
+          "z_axis_power_w_plus": 73,
+          "z_axis_power_w_minus": 13
+        },
+        {
+          "feed_velocity_mm_min": 3000,
+          "x_axis_power_w": 52,
+          "y_axis_power_w": 33,
+          "z_axis_power_w_plus": 86,
+          "z_axis_power_w_minus": 14
+        },
+        {
+          "feed_velocity_mm_min": 3500,
+          "x_axis_power_w": 58,
+          "y_axis_power_w": 38,
+          "z_axis_power_w_plus": 94,
+          "z_axis_power_w_minus": 20
+        },
+        {
+          "feed_velocity_mm_min": 4000,
+          "x_axis_power_w": 63,
+          "y_axis_power_w": 44,
+          "z_axis_power_w_plus": 108,
+          "z_axis_power_w_minus": 21
+        },
+        {
+          "feed_velocity_mm_min": 4500,
+          "x_axis_power_w": 69,
+          "y_axis_power_w": 50,
+          "z_axis_power_w_plus": 119,
+          "z_axis_power_w_minus": 25
+        },
+        {
+          "feed_velocity_mm_min": 5000,
+          "x_axis_power_w": 76,
+          "y_axis_power_w": 52,
+          "z_axis_power_w_plus": 129,
+          "z_axis_power_w_minus": 28
+        }
+      ]
+    }
+  },
+  "energy_data": {
+    "energy_usage": "Estimation value: 140,681.68 J; Measured value: 153,352.8 J",
+    "power_consumption": "Standby: 530 W, Spindle: PSR=58.909 +0.1698 n, X-axis: PXF= 19.867 +0.0109 vx, Y-axis: PYF= 0.2667 +0.0107 vy, Z-axis (up): PZF+= 21.933 +0.0212 vz+, Z-axis (down): PZF-= 2.6667 +0.0048 vz-",
+    "measurement_method": "Yokogawa WT1800 power analyzer"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "Operating time estimation error: 7.14%; Energy consumption estimation error: 8.26%",
+    "other_kpis": [
+      "Estimated operating time: 210.786 s"
+    ]
+  },
+  "additional_notes": "This paper presents an energy consumption estimation method for the tool setting process in CNC milling based on the modular arrangement of predetermined time standards (MODAPTS). The method aims to increase the transparency of energy consumption and help establish labor-hour quotas and energy consumption allowances in the tool setting process."
+}

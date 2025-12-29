@@ -1,0 +1,100 @@
+{
+  "paper_metadata": {
+    "title": "Rapid Energy Consumption Model ling for CNC Based Milling Process",
+    "authors": [
+      "Wen -Tse Hsu",
+      "Pang -Hsiang Hung",
+      "Bing-He Chou",
+      "Po-Han Chen",
+      "Shang- Yu Lin",
+      "Tay-Jyi Lin",
+      "Yuh -Chung Hu",
+      "Pei- Zen Chang",
+      "Wei-Chang Lia"
+    ],
+    "publication_date": "2024",
+    "journal_or_conference": "Procedia CIRP 130 (2024) 1764\u20131769"
+  },
+  "machine_info": {
+    "machine_name": "not specified",
+    "machine_type": "CNC milling",
+    "axis": "not specified",
+    "control_unit": "NC (Numerical Control)",
+    "material_processed": "S50C",
+    "process_parameters": {
+      "spindle_speed": "Experiments conducted at four different speeds within each segment of the piecewise function (500-1500 rpm, 1500 -4000 rpm, 4000 -10000 rpm)",
+      "feed_rate": "Experiments conducted using feed rate as a parameter in experiments (500-8000 mm/min)",
+      "cutting_depth": "Depth of cut [mm] 0.5, 1, 1.5",
+      "spindle_data": [
+        {
+          "spindle_speed_rpm": 500,
+          "measured_power_w": "not specified"
+        },
+        {
+          "spindle_speed_rpm": 1500,
+          "measured_power_w": "not specified"
+        },
+        {
+          "spindle_speed_rpm": 1500,
+          "measured_power_w": "not specified"
+        },
+        {
+          "spindle_speed_rpm": 4000,
+          "measured_power_w": "not specified"
+        },
+        {
+          "spindle_speed_rpm": 4000,
+          "measured_power_w": "not specified"
+        },
+        {
+          "spindle_speed_rpm": 10000,
+          "measured_power_w": "not specified"
+        }
+      ],
+      "feeding_data": [
+        {
+          "feed_velocity_mm_min": 500,
+          "x_axis_power_w": "not specified",
+          "y_axis_power_w": "not specified",
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 8000,
+          "x_axis_power_w": "not specified",
+          "y_axis_power_w": "not specified",
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 500,
+          "x_axis_power_w": "not specified",
+          "y_axis_power_w": "not specified",
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 8000,
+          "x_axis_power_w": "not specified",
+          "y_axis_power_w": "not specified",
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        }
+      ]
+    }
+  },
+  "energy_data": {
+    "energy_usage": "Estimated energy consumption model had an average percentage error of 3.98%.",
+    "power_consumption": "Standby power for VP-6: 540 W, MT960V: 610 W, TMV-510A: 430 W, QP1620 -L: 285 W, NDV102A: 625 W, AXILEV7: 878 W, V-30iT: 462 W, V-40iL: 680 W, AV-1250: 887 W, AF-1000: 864 W",
+    "measurement_method": "Voltage magnetic adapters HIOKI 9804 -01and two current transducers CYBER HCP8150"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "The achieved error rate of up to 3.98% underscores the efficacy of this approach.",
+    "other_kpis": [
+      "The overall time required for obtaining the power consumption model is around 30 minutes, including 15 minutes estimated for electrical sensors installation."
+    ]
+  },
+  "additional_notes": "This study introduces a methodology for rapidly establishing an energy consumption model based on NC code for CNC milling operations. The approach significantly reduces the time needed to gather training and validation data through magnetic voltage sensors and a modified Taguchi method."
+}

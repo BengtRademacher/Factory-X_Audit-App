@@ -1,0 +1,115 @@
+{
+  "paper_metadata": {
+    "title": "Key performance indicators for assessing inherent energy performance of machine tools in industries",
+    "authors": ["Junbo Tuo","Fei Liu","Peiji Liu"],
+    "publication_date": "2018-08-13 (published online); 2019 (Intl. J. Production Research, Vol.57 No.6)",
+    "journal_or_conference": "International Journal of Production Research"
+  },
+  "machine_info": {
+    "machine_name": "not specified",
+    "machine_type": "CNC milling centre (case study) / general machine tools (framework applies to milling, turning, drilling, grinding)",
+    "axis": "not specified",
+    "control_unit": "not specified",
+    "material_processed": "Aluminium plate (case study: Al plate 200 mm × 250 mm × 30 mm); framework-level: various (steel, aluminum, titanium, cast irons, composites)",
+    "process_parameters": {
+      "spindle_speed": "",
+      "feed_rate": "",
+      "cutting_depth": "",
+      "spindle_data": [],
+      "feeding_data": [],
+      "reported_functions_and_tables": {
+        "standby_power_values_w": [323, 415],
+        "constant_powers_w": {
+          "machine_main_body_avg": 323,
+          "hydraulic_system_avg": 92
+        },
+        "starting_energy_function_kJ": "Est(n) = 7.15e-6 * n^2 + 1.77e-6 * n + 6.17  for n in [200, 4000]",
+        "idling_power_piecewise_W": [
+          {
+            "rpm_range": "(200, 2400]",
+            "Pu(n)_W": "8.80e-2 * n + 424.36"
+          },
+          {
+            "rpm_range": "(2400, 2800]",
+            "Pu(n)_W": "-1.49e-2 * n + 670"
+          },
+          {
+            "rpm_range": "(2800, 4000]",
+            "Pu(n)_W": "3.96e-2 * n + 517.63"
+          }
+        ],
+        "feed_power_functions_W": {
+          "EPfx(fvi,x)": "1.15e-2 * n + 421.58   (reported domain fvi,x in [40,450])",
+          "EPfy(fvi,y)": "8.82e-3 * n + 422.61    (reported domain fvi,y in [40,450])",
+          "note": "paper reports feed-power as fitted linear functions (X and Y axes). Z-axis not measured (low power/variability)."
+        },
+        "loading_loss_coefficient_function": {
+          "representative_rpms": [200, 600, 1000, 1400, 1800, 2200, 2600, 3000, 3600],
+          "a_values": [0.27, 0.24, 0.08, 0.17, 0.20, 0.11, 0.09, 0.16, 0.10]
+        },
+        "measurement_notes": {
+          "power_analyser": "HC3390 power analyser, sampling frequency 500 kHz",
+          "force_measurement": "force sensor + charge amplifier + data acquisition used to measure cutting forces (for cutting power/loading loss)",
+          "measurement_boundary": "Type 1 (electrical energy at mains) per ISO conventions",
+          "measurement_steps_constraints": "dwell time of 5 s between steps; idling time T2 > 5 s; air-cutting distance > 20 mm recommended"
+        },
+        "equivalent_energy_consumption_indexes": {
+          "equivalent_standby_power_W": 396.6,
+          "equivalent_starting_energy_kJ": 37.26,
+          "equivalent_idling_power_W": 565.15,
+          "equivalent_feed_power_x_W": 424.28,
+          "equivalent_feed_power_y_W": 424.20,
+          "equivalent_loading_loss_coefficient": 0.137
+        }
+      }
+    }
+  },
+  "energy_data": {
+    "energy_usage": "",
+    "power_consumption": {
+      "constant_and_variable_examples_W": {
+        "machine_main_body_constant_avg_W": 323,
+        "hydraulic_system_avg_W": 92,
+        "reported_standby_cases_W": [323, 415],
+        "equivalent_idling_power_W": 565.15,
+        "note": "Spindle power P_spindle is computed by subtracting standby power (415 W used in example) from measured idling power shown in idling-power curves."
+      },
+      "measurement_method": "Direct experimental measurement: HC3390 power analyser (500 kHz), force sensor + charge amplifier + DAQ for cutting forces; data acquisition for variable power; measurement boundary = electrical input (Type 1)."
+    }
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "",
+    "CO2_emissions": "",
+    "efficiency": "Framework-focused: IEP indexes decompose machine energy into standby, starting, idling, feed, and additional loading loss; efficiency improvements are expressed via reduced equivalent indexes or lower loading-loss coefficients rather than a single universal % in the paper.",
+    "other_kpis": [
+      {
+        "loading_loss_coefficients_table": {
+          "rpm": [200, 600, 1000, 1400, 1800, 2200, 2600, 3000, 3600],
+          "a": [0.27, 0.24, 0.08, 0.17, 0.20, 0.11, 0.09, 0.16, 0.10]
+        }
+      },
+      {
+        "measurement_constraints": {
+          "idling_time_min_s": 5,
+          "air_cutting_distance_min_mm": 20
+        }
+      },
+      {
+        "selection_example_table_5": {
+          "conventional_method_standby_power_W": {
+            "YE3120CNC7": 3442,
+            "YS3120CNC7": 2378
+          },
+          "proposed_method_equivalent_idling_power_W": {
+            "YE3120CNC7": 5496,
+            "YS3120CNC7": 6106
+          },
+          "note": "Table 5 shows how proposed IEP indexes change ranking/selection compared to conventional metric."
+        }
+      }
+    ]
+  },
+  "additional_notes": "This paper proposes the IEP index system and demonstrates its extraction via a CNC milling-centre case study. The JSON captures the numeric functions, coefficients and equivalent-index values reported in Table 4 and related text. Limitations reported by the authors: indexes primarily suitable for metal-cutting machine tools; OCD (operation-correlated data) in the case study was collected from a single enterprise (may be statistically limited). If you want, I can: (A) convert the idling-power piecewise functions into a numeric table at the nine representative rpms, (B) compute spindle power estimates at the representative rpms by subtracting standby and present them in spindle_data array, and (C) split the full PDF into 1000–2000 word chunks and extract any additional numeric tables/figures into arrays — tell me which of A/B/C you prefer and I will produce the expanded JSON immediately.",
+  "source_file": "/mnt/data/A7_Key_performance_indicators_for_assessing_inherent_energy_performance_of_machine_tools_in_industries.pdf"
+}
+  

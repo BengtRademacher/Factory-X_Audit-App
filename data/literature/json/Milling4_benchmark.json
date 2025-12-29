@@ -1,0 +1,173 @@
+{
+  "paper_metadata": {
+    "title": "Energy efficient machine tools",
+    "authors": ["Berend Denkena","Eberhard Abele","Christian Brecher","Marc-André Dittrich","Sami Kara","Masahiko Mori"],
+    "publication_date": "2020",
+    "journal_or_conference": "CIRP Annals - Manufacturing Technology"
+  },
+  "machine_info": {
+    "summary": "This is a review paper analyzing multiple machine tools to provide a broad overview of energy efficiency. Specific data is provided for the machines listed below.",
+    "machines_analyzed": [
+      {
+        "machine_name": "Deckel Maho DMC 80H duoBlock",
+        "machine_type": "Horizontal machining centre"
+      },
+      {
+        "machine_name": "Deckel Maho DMU 340 P",
+        "machine_type": "Vertical machining centre"
+      },
+      {
+        "machine_name": "EMAG VSC7",
+        "machine_type": "Vertical lathe"
+      },
+      {
+        "machine_name": "Heller H2000",
+        "machine_type": "Horizontal machining centre"
+      },
+      {
+        "machine_name": "MAG XS-211",
+        "machine_type": "Horizontal machining centre"
+      },
+      {
+        "machine_name": "EMAG VLC 100 Y",
+        "machine_type": "Lathe"
+      }
+    ],
+    "material_processed": "The paper mentions machining of Ti-6Al-4V and Inconel 718 in specific cited studies, but does not tie them to the primary machines analyzed for energy breakdown.",
+    "tool_info": "Not specified, as the paper is a general review.",
+    "process_parameters": "The paper discusses various machining processes like milling, drilling, turning, and grinding but does not provide specific operational parameters for the analyzed machines."
+  },
+  "energy_data": {
+    "total_energy_breakdown": {
+      "description": "Average electric power demand breakdown for a lathe (EMAG VLC 100 Y) in working mode.",
+      "overall_power_w": 5826,
+      "components": [
+        {
+          "name": "Cutting fluid pump",
+          "power_w": 1248,
+          "contribution_percentage": 21.4
+        },
+        {
+          "name": "Main drives",
+          "power_w": 1660,
+          "contribution_percentage": 28.5
+        },
+        {
+          "name": "Cooling system",
+          "power_w": 1576,
+          "contribution_percentage": 27.0,
+          "subcomponents": [
+            {
+              "name": "Compressor",
+              "power_w": 915
+            },
+            {
+              "name": "Machine cooling pump",
+              "power_w": 500
+            },
+            {
+              "name": "Control cabinet pump",
+              "power_w": 161
+            }
+          ]
+        },
+        {
+          "name": "Hydraulics",
+          "power_w": 487,
+          "contribution_percentage": 8.4,
+          "subcomponents": [
+            {
+              "name": "Hydraulic pump",
+              "power_w": 430
+            },
+            {
+              "name": "Cooling fan",
+              "power_w": 57
+            }
+          ]
+        },
+        {
+          "name": "Extraction system",
+          "power_w": 99,
+          "contribution_percentage": 1.7
+        },
+        {
+          "name": "Chip conveyor",
+          "power_w": 82,
+          "contribution_percentage": 1.4
+        },
+        {
+          "name": "Other",
+          "power_w": 674,
+          "contribution_percentage": 11.6
+        }
+      ]
+    },
+    "machine_states_power_consumption": {
+      "summary": "The power profile of a machine tool can be broken down into distinct energy categories based on its operational state.",
+      "energy_types": [
+        {
+          "name": "Fixed energy",
+          "description": "The base load required to ensure the machine is ready for operation."
+        },
+        {
+          "name": "Operational energy",
+          "description": "Additional energy needed to move feed axes and rotate the spindle without material removal (air cut)."
+        },
+        {
+          "name": "Tool tip energy",
+          "description": "The portion of energy used for the actual material removal process."
+        },
+        {
+          "name": "Losses",
+          "description": "Energy dissipated during machining, for example as heat from friction and ohmic losses."
+        }
+      ]
+    },
+    "measurement_method": "The paper reviews various methods, including direct power measurements, simulations, and estimation methods using technical documentation and historical data."
+  },
+  "kpi_metrics": {
+    "energy_efficiency_definition": "The paper defines machine tool energy efficiency (η_MT) as the ratio of spindle power demand to the total power demand of the machine (η_MT = P_Spindle / P_Total).",
+    "auxiliary_systems_contribution": "Support units (e.g., cooling, hydraulics, cutting fluid supply) are identified as the dominant source of energy consumption in modern machine tools, often accounting for over 70% of the total power demand.",
+    "energy_waste_causes": "The most common reasons for poor energy efficiency are the oversizing of components (especially auxiliary equipment), idle times, and overproduction (e.g., maintaining excessive pressure in fluid systems)."
+  },
+  "optimization_scenarios": {
+    "cooling_systems": [
+      {
+        "strategy": "Replacing continuous operation with hot gas bypass with a clocked (on/off) compressor.",
+        "energy_saving_percentage": 25
+      },
+      {
+        "strategy": "Using variable speed or digital scroll compressors to eliminate the hot gas bypass.",
+        "energy_saving_percentage": "Up to 70"
+      },
+      {
+        "strategy": "Using air cooling units instead of refrigerant-based systems.",
+        "energy_saving_percentage": "Up to 70"
+      }
+    ],
+    "cutting_fluid_supply": [
+      {
+        "strategy": "Demand-oriented control of a high-pressure pump via a simulation-based approach to adjust flow rate per NC command.",
+        "energy_saving_percentage": "81 (for the pump), 37 (for the entire machine tool)"
+      }
+    ],
+    "hydraulics": [
+      {
+        "strategy": "Implementing optimized seat valves and pressure accumulators in the hydraulic unit.",
+        "energy_saving_percentage": 91
+      },
+      {
+        "strategy": "Using an optimized unit with a variable speed pump and accumulators to reduce pressure losses in idle mode.",
+        "energy_saving_percentage": "90 (for idle losses), 26 (for active power)"
+      }
+    ],
+    "dust_extraction_systems": [
+      {
+        "strategy": "Applying a sensor-based, demand-oriented control concept to the suction system.",
+        "energy_saving_percentage": "Up to 72"
+      }
+    ]
+  },
+  "additional_notes": "This keynote paper provides a comprehensive review of measures to improve the energy efficiency of metal cutting machine tools. A key finding is that the energy required for the actual chip removal process is far exceeded by the demands of auxiliary support units. Therefore, the most significant efficiency gains are found in optimizing these support systems through demand-oriented operation, rightsizing components, and adopting more efficient technologies. The paper concludes that while many technologies for energy savings are feasible, their implementation in industry is hindered by economic factors and a lack of integrated software tools."
+}

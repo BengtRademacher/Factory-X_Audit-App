@@ -1,0 +1,38 @@
+{
+  "paper_metadata": {
+    "title": "Key performance indicators for assessing inherent energy performance of machine tools in industries",
+    "authors": [
+      "Junbo Tuo",
+      "Fei Liu",
+      "Peiji Liu"
+    ],
+    "publication_date": "August 2018",
+    "journal_or_conference": "International Journal of Production Research"
+  },
+  "machine_info": {
+    "machine_name": "CNC milling centre",
+    "machine_type": "milling machine",
+    "axis": "X, Y, Z",
+    "control_unit": "not specified",
+    "material_processed": "aluminium plate",
+    "process_parameters": {
+      "spindle_speed": "200-4000 rpm",
+      "feed_rate": "40-450 mm/min",
+      "cutting_depth": "not specified",
+      "spindle_data": [],
+      "feeding_data": []
+    }
+  },
+  "energy_data": {
+    "energy_usage": "not specified",
+    "power_consumption": "Standby: 323W, 415W; Hydraulic System: 92W; Constant Power: 323W",
+    "measurement_method": "HC3390 power analyser with a sampling frequency of 500 kHz"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "not specified",
+    "CO2_emissions": "not specified",
+    "efficiency": "not specified",
+    "other_kpis": []
+  },
+  "additional_notes": "This paper proposes key performance indicators (IEP) to assess the energy performance of machine tools, considering process controls in the usage phase. A systematic method is introduced to acquire the IEP indexes for developing energy-efficient machine tools and selecting matching machine tools."
+}

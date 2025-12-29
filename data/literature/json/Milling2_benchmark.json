@@ -1,0 +1,157 @@
+{
+  "paper_metadata": {
+    "title": "Machine-Specific Estimation of Milling Energy Consumption in Detailed Design",
+    "authors": ["Till Boettjer", "Johan Thoft Krogshave", "Devarajan Ramanujan"],
+    "publication_date": "2021-02",
+    "journal_or_conference": "Journal of Manufacturing Science and Engineering"
+  },
+  "machine_info": [
+    {
+      "maschine_name": "Chevalier QP2040-L",
+      "maschine_type": "3-axis vertical milling machine",
+      "axis": "Three Axis (X, Y, Z)",
+      "control_panel": true,
+      "automatic_tool_changer": true,
+      "cutting_fluid_pump": true
+    },
+    {
+      "maschine_name": "Leadwell MCV-OP", 
+      "maschine_type": "3-axis vertical milling machine",
+      "axis": "Three Axis (X, Y, Z)",
+      "control_panel": true,
+      "automatic_tool_changer": true,
+      "cutting_fluid_pump": true
+    }
+  ],
+  "material_processed": "Aluminum 6082",
+  "energy_data": {
+    "measurement_method": "SCT013-000 hall effect current sensor + Arduino Due, 400 samples/cycle, 230V fixed voltage, ±8.5% uncertainty",
+    "power_consumption": {
+      "basic_mode": {
+        "description": "Stand-by power (peripherals and auxiliary components)",
+        "MT1_measured_w": 814.0,
+        "MT2_measured_w": 970.0,
+        "MT1_range_w": [745.0, 926.0],
+        "MT2_range_w": [403.0, 626.0],
+        "UPLCI_estimated_w": 3750.0
+      },
+      "idle_mode": {
+        "description": "Run-time power (tool movement without cutting)",
+        "substates": {
+          "material_removal_mr": {
+            "MT1_w": 451.5,
+            "MT2_w": 266.2
+          },
+          "non_material_removal_nmr": {
+            "MT1_w": 763.7, 
+            "MT2_w": 589.6
+          },
+          "rapid_traverse_rt": {
+            "MT1_w": 517.3,
+            "MT2_w": 397.2
+          },
+          "tool_change_tc": {
+            "MT1_w": 1011.0,
+            "MT2_w": 236.5
+          }
+        },
+        "UPLCI_estimated_MT1_w": 9673.1,
+        "UPLCI_estimated_MT2_w": 4853.6
+      },
+      "milling_mode": {
+        "description": "Physical cutting power",
+        "estimation_method": "P_milling = VRR × SCE",
+        "SCE_Aluminum_6082_J_mm3": 0.7
+      }
+    },
+    "time_data": {
+      "basic_time": {
+        "MT1_measured_s": 378,
+        "MT2_measured_s": 448,
+        "MT1_UPLCI_estimated_s": 329,
+        "MT2_UPLCI_estimated_s": 396
+      },
+      "idle_time": {
+        "MT1_measured_min": 6.32,
+        "MT2_measured_min": 8.64, 
+        "MT1_UPLCI_estimated_min": 5.42,
+        "MT2_UPLCI_estimated_min": 5.22
+      },
+      "load_unload_time_s": 19.6
+    },
+    "energy_consumption_validation": {
+      "VP1_MT1": {
+        "milling_kJ": 57.3,
+        "idle_kJ": 141.9,
+        "basic_kJ": 211.0,
+        "total_kJ": 410.2
+      },
+      "VP2_MT1": {
+        "milling_kJ": 34.2,
+        "idle_kJ": 90.9,
+        "basic_kJ": 148.9,
+        "total_kJ": 274.0
+      },
+      "VP3_MT1": {
+        "milling_kJ": 53.3,
+        "idle_kJ": 373.3,
+        "basic_kJ": 515.6,
+        "total_kJ": 942.1
+      },
+      "VP1_MT2": {
+        "milling_kJ": 43.5,
+        "idle_kJ": 117.7,
+        "basic_kJ": 322.0,
+        "total_kJ": 483.2
+      },
+      "VP2_MT2": {
+        "milling_kJ": 30.4,
+        "idle_kJ": 97.4,
+        "basic_kJ": 245.2,
+        "total_kJ": 372.9
+      },
+      "VP3_MT2": {
+        "milling_kJ": 51.8,
+        "idle_kJ": 288.2,
+        "basic_kJ": 519.5,
+        "total_kJ": 859.6
+      }
+    }
+  },
+  "kpi_metrics": {
+    "energy_distribution": {
+      "milling_share_MT1": "~11%",
+      "milling_share_MT2": "~9%",
+      "idle_basic_share_MT1": "~89%",
+      "idle_basic_share_MT2": "~91%"
+    },
+    "estimation_accuracy": {
+      "UPLCI_model_errors": {
+        "milling_energy_error_range": "2.6% to 91.3%",
+        "basic_energy_error_range": "277.5% to 837.2%",
+        "idle_energy_error": "Significant overestimation"
+      },
+      "adjusted_UPLCI_improvement": {
+        "max_idle_error_MT1": "25%",
+        "max_idle_error_MT2": "49%",
+        "max_basic_error_MT1": "27%", 
+        "max_basic_error_MT2": "68%",
+        "max_milling_error_MT1": "16%",
+        "max_milling_error_MT2": "37%"
+      }
+    },
+    "adjustment_factors": {
+      "basic_MT1": 0.24,
+      "basic_MT2": 0.15,
+      "idle_mr_MT1": 0.05,
+      "idle_mr_MT2": 0.06,
+      "idle_rt_MT1": 1.54,
+      "idle_rt_MT2": 3.18,
+      "milling_face_MT1": 1.05,
+      "milling_face_MT2": 0.80,
+      "milling_drilling_MT1": 1.19,
+      "milling_drilling_MT2": 3.69
+    }
+  },
+  "additional_notes": "Proposes machine-specific adjustment factors for UPLCI energy estimation model. Validated on two 3-axis milling machines using reference test part and three validation parts. Highlights importance of machine condition and process parameters on energy accuracy."
+}

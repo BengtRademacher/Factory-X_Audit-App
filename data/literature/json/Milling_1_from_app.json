@@ -1,0 +1,79 @@
+{
+  "paper_metadata": {
+    "title": "Experimental characterization of energy consumption in 5 -axis milling machine and developing optimization strategy",
+    "authors": [
+      "Sunil Kumar Maurya",
+      "Gianni Campatelli",
+      "Massimo Veracini"
+    ],
+    "publication_date": "2024",
+    "journal_or_conference": "Procedia CIRP 122"
+  },
+  "machine_info": {
+    "machine_name": "GF AgieCharmilles Mikron HPM 800U HD",
+    "machine_type": "5 -axis High Performance Machining Center",
+    "axis": "5-axis",
+    "control_unit": "Heidenhain iTNC 530",
+    "material_processed": "A182 F22 Alloy Steel",
+    "process_parameters": {
+      "spindle_speed": "2150, 2627, 2389, 1911, 2866 rpm",
+      "feed_rate": "1161, 1419, 1734, 1433, 1146, 1720 mm/min",
+      "cutting_depth": "not specified",
+      "spindle_data": [],
+      "feeding_data": [
+        {
+          "feed_velocity_mm_min": 0,
+          "x_axis_power_w": 3.94,
+          "y_axis_power_w": 3.97,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 0,
+          "x_axis_power_w": 3.75,
+          "y_axis_power_w": 3.79,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 0,
+          "x_axis_power_w": 4.48,
+          "y_axis_power_w": 4.52,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 0,
+          "x_axis_power_w": 4.43,
+          "y_axis_power_w": 4.51,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        },
+        {
+          "feed_velocity_mm_min": 0,
+          "x_axis_power_w": 4.46,
+          "y_axis_power_w": 4.51,
+          "z_axis_power_w_plus": "not specified",
+          "z_axis_power_w_minus": "not specified"
+        }
+      ]
+    }
+  },
+  "energy_data": {
+    "energy_usage": "not specified",
+    "power_consumption": "Base Consumption: 2011.43 Watts, Refrigeration: 2819.43 Watts, Chip Conveyer: 3694.37 Watts, Tool Changer: 191.96 Watts, Oil Mist: 320.78 Watts, Coolant: 1158.21 Watts, MR Process: 3287.00 Watts, Standby: 1.734 kW, Shutdown: 0 kW",
+    "measurement_method": "split core clamp -on power probes"
+  },
+  "kpi_metrics": {
+    "specific_energy_consumption": "T-SEC varies from 0.416 kJ/mm3 to 1.652 kJ/mm3",
+    "CO2_emissions": "not specified",
+    "efficiency": "Energy saving respect to original for chip conveyor: Roughing 30.08%, 45.26%, Finishing 79.95%, 89.97%.",
+    "other_kpis": [
+      "Power-up from Standby: 35 sec",
+      "Power-up from Shutdown: 360 sec",
+      "Energy Consumption CHANGE: Power -up from Standby: 0.01932 kWh",
+      "Energy Consumption CHANGE: Power -up from Shutdown: 0.4413 kWh"
+    ]
+  },
+  "additional_notes": "The paper focuses on the experimental characterization of energy consumption in a 5-axis milling machine and explores optimization strategies, particularly by analyzing the contribution of auxiliary systems and optimizing process parameters. The study aims to reduce energy consumption and improve the overall efficiency of the milling process."
+}
