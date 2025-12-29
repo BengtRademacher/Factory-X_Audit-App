@@ -4,7 +4,7 @@ from pathlib import Path
 class Settings(BaseSettings):
     """Zentrale Konfiguration für die Audit App."""
     
-    APP_NAME: str = "Audit App V01"
+    APP_NAME: str = "Audit App V02"
     
     # Pfade
     BASE_DIR: Path = Path(__file__).parent.parent

@@ -1,4 +1,6 @@
-# Audit App V01
+# Audit App V02
+
+*Stand: 29. Dezember 2025*
 
 Eine Streamlit-basierte Anwendung zur automatisierten Extraktion, Verarbeitung und zum Vergleich von Forschungsdaten und Messdaten im Bereich Maschinen-Energieeffizienz.
 

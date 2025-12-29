@@ -1,4 +1,4 @@
-# Projekt-Übersicht: Audit App V01
+# Projekt-Übersicht: Audit App V02
 
 Dieses Projekt dient der automatisierten Extraktion, Verarbeitung und dem Vergleich von Forschungsdaten aus wissenschaftlichen Publikationen (PDFs) und Excel-Dateien (XLSX) in das JSON-Format, unterstützt durch KI (Google Gemini).
 
