@@ -1,6 +1,7 @@
 import abc
 from typing import Optional, Dict, Any, List
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import streamlit as st
 
 class BaseLLMProvider(abc.ABC):
@@ -17,34 +18,39 @@ class BaseLLMProvider(abc.ABC):
         pass
 
 class GeminiProvider(BaseLLMProvider):
-    """Implementierung für Google Gemini."""
+    """Implementierung für Google Gemini unter Verwendung des neuen google-genai SDKs."""
     
     def __init__(self, api_key: str, model_name: str = "gemini-2.0-flash"):
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel(model_name)
+        self.client = genai.Client(api_key=api_key)
+        self.model_name = model_name
         
     def generate(self, prompt: str, system_instruction: Optional[str] = None) -> str:
         try:
-            full_prompt = prompt
+            config = None
             if system_instruction:
-                full_prompt = f"{system_instruction}\n\n{prompt}"
+                config = types.GenerateContentConfig(
+                    system_instruction=system_instruction
+                )
                 
-            response = self.model.generate_content(full_prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=config
+            )
             return response.text.strip()
         except Exception as e:
             return f"Error with Gemini: {str(e)}"
 
     def generate_from_file(self, prompt: str, file_bytes: bytes, mime_type: str = "application/pdf") -> str:
         try:
-            # Gemini unterstützt Inline-Daten für PDFs
-            content = [
-                prompt,
-                {
-                    "mime_type": mime_type,
-                    "data": file_bytes
-                }
-            ]
-            response = self.model.generate_content(content)
+            # Das neue SDK verwendet Parts für Datei-Uploads/Inline-Daten
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=[
+                    types.Part.from_bytes(data=file_bytes, mime_type=mime_type),
+                    prompt
+                ]
+            )
             return response.text.strip()
         except Exception as e:
             return f"Error with Gemini (File): {str(e)}"
@@ -127,4 +133,3 @@ class LLMService:
 
     def list_providers(self) -> List[str]:
         return list(self.providers.keys())
-
