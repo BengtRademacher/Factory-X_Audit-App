@@ -1,6 +1,6 @@
 import abc
 from typing import Optional, Dict, Any, List
-from google import genai
+import google.genai as genai
 from google.genai import types
 import streamlit as st
 
