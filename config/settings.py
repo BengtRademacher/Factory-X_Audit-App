@@ -24,18 +24,29 @@ class Settings(BaseSettings):
 
 # Farbpalette (ausserhalb der Settings-Klasse fuer einfachen Import)
 COLORS: Dict[str, str] = {
-    "primary": "#006DB9",      # Blau (neue Primary)
-    "secondary": "#007CC5",    # Hellblau (neue Secondary)
-    "success": "#01A579",      # Gruen
-    # Reserve
-    "warning": "#F9B31A",
-    "error": "#E50037",
+    "Violett": "#4B5BA9",
+    "Blau": "#006DB9",
+    "Hellblau": "#007CC5",
+    "Dunkelgrün": "#01A579",
+    "Hellgrün": "#B1CB21",
+    "Gelb": "#F9B31A",
+    "Orange": "#EF7100",
+    "Rot": "#E50037",
 }
 
-# Vollstaendige Palette fuer sequentielle Charts (ohne das erste Dunkelblau)
+# Funktionale Zuweisungen für die App-Logik
+COLORS.update({
+    "primary": COLORS["Hellblau"],   # Hellblau als Primary
+    "secondary": COLORS["Blau"],     # Blau als Secondary
+    "success": COLORS["Dunkelgrün"],
+    "warning": COLORS["Gelb"],
+    "error": COLORS["Rot"]
+})
+
+# Vollstaendige Palette fuer sequentielle Charts
 COLORS_SEQUENCE: List[str] = [
-    '#006DB9', '#007CC5', '#01A579',             # Aktiv
-    '#B1CB21', '#F9B31A', '#EF7100', '#E50037'   # Reserve
+    COLORS["Violett"], COLORS["Blau"], COLORS["Hellblau"], COLORS["Dunkelgrün"],
+    COLORS["Hellgrün"], COLORS["Gelb"], COLORS["Orange"], COLORS["Rot"]
 ]
 
 settings = Settings()

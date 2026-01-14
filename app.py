@@ -1,9 +1,11 @@
 import streamlit as st
 import json
 import time
+import base64
+from pathlib import Path
 from io import BytesIO
 from core.llm_service import LLMService
-from config.settings import settings
+from config.settings import settings, COLORS
 from config.prompts import PAPER_EXTRACTION_PROMPT, COMPARISON_PROMPT
 from database.literature_db import LiteratureDB
 from database.working_store import WorkingStore
@@ -30,9 +32,101 @@ def init_session_state():
             st.session_state[key] = value
 
 
+def _get_base64(path: Path) -> str:
+    """Lädt eine Datei als Base64-String."""
+    if not path.exists():
+        return ""
+    with path.open("rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
+
+
+def inject_custom_styles():
+    """Injeziert CSS für das Branding und Layout-Verbesserungen."""
+    logo_path = Path("assets/FX_logo_top_left.png")
+    svg_style_path = Path("assets/FX_style_top_right.svg")
+    
+    # Hintergrundkonfiguration (Blau mit Transparenz)
+    bg_color_hex = COLORS.get("Blau", "#006DB9")
+    bg_opacity = 0.08
+    
+    # Hex zu RGB Konvertierung für die Nutzung in rgba()
+    h = bg_color_hex.lstrip('#')
+    r, g, b = tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+    rgba_bg = f"rgba({r}, {g}, {b}, {bg_opacity})"
+
+    # Base64 für das Hintergrund-SVG laden
+    style_base64 = _get_base64(svg_style_path)
+    
+    # CSS für das Hintergrund-SVG (nur wenn Datei existiert)
+    bg_style = ""
+    if style_base64:
+        bg_style = f"""
+        [data-testid="stAppViewContainer"]::before {{
+            content: "";
+            position: fixed;
+            top: -5px;
+            right: -5px;
+            width: 400px;
+            height: 400px;
+            background-image: url('data:image/svg+xml;base64,{style_base64}');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+            opacity: 0.4;
+            transform: rotate(180deg);
+            pointer-events: none;
+            z-index: 0;
+        }}
+        """
+
+    # Gesamtes Styling-Paket injizieren
+    st.markdown(f"""
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <style>
+        /* 1. Globaler Hintergrund */
+        [data-testid="stAppViewContainer"] {{
+            background-color: {rgba_bg};
+        }}
+        
+        /* 2. Hintergrund-SVG */
+        {bg_style}
+        
+        /* 3. Sidebar Header & Logo */
+        [data-testid="stSidebarHeader"] {{
+            height: 120px !important;
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+        }}
+        [data-testid="stSidebarHeader"] img {{
+            height: 100px !important;
+            width: auto !important;
+        }}
+        
+        /* 4. Main Container Adjustments */
+        [data-testid="stMainBlockContainer"] {{
+            padding-top: 2rem !important;
+        }}
+        
+        /* 5. Transparent Header/Toolbar */
+        header[data-testid="stHeader"], [data-testid="stToolbar"] {{
+            background-color: transparent !important;
+        }}
+        
+        /* 6. Material Icons Integration */
+        .material-symbols-rounded {{
+            font-family: 'Material Symbols Rounded';
+            vertical-align: middle;
+            margin-right: 8px;
+            font-variation-settings: 'opsz' 24;
+        }}
+    </style>
+    """, unsafe_allow_html=True)
+
+
 def render_sidebar():
     """Rendert die Sidebar mit LLM-Konfiguration und App-Info."""
-    st.sidebar.title("Einstellungen")
     
     # LLM Service initialisieren falls nötig
     if st.session_state.llm_service is None:
@@ -41,31 +135,42 @@ def render_sidebar():
     llm_service = st.session_state.llm_service
     available_providers = llm_service.list_providers()
     
-    st.sidebar.subheader("AI Backend")
-    if not available_providers:
-        st.sidebar.warning("Keine LLM-Provider konfiguriert. Bitte secrets.toml pruefen.")
-    else:
-        selected_provider = st.sidebar.radio(
-            "Bevorzugter Provider",
-            options=available_providers,
-            index=0 if "gemini" in available_providers else 0
-        )
-        st.session_state.llm_provider = selected_provider
-    
-    st.sidebar.divider()
-    st.sidebar.caption(f"Version: {settings.APP_NAME}")
+    with st.sidebar:
+        st.markdown("### Einstellungen")
+        
+        with st.expander("🤖 AI Backend", expanded=True):
+            if not available_providers:
+                st.warning("Keine LLM-Provider konfiguriert. Bitte secrets.toml prüfen.")
+            else:
+                selected_provider = st.radio(
+                    "Bevorzugter Provider",
+                    options=available_providers,
+                    index=0 if "gemini" in available_providers else 0
+                )
+                st.session_state.llm_provider = selected_provider
+        
+        st.divider()
+        st.caption("Factory-X Audit-App v1.1")
 
 
-def render_tab_header(icon: str, title: str, description: str):
-    """Einheitlicher Header für jeden Tab."""
-    st.header(f"{icon} {title}")
+def render_tab_header(icon_name: str, title: str, description: str):
+    """Einheitlicher Header für jeden Tab mit Material Icons."""
+    st.markdown(
+        f"""
+        <div style='display:flex; align-items:center; gap:16px; margin-top:0.5rem;'>
+            <span class='material-symbols-rounded' style='font-size:32px;'>{icon_name}</span>
+            <h2 style='margin:0;'>{title}</h2>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.caption(description)
     st.divider()
 
 
 # --- Capability 1: Paper to JSON ---
 def render_paper_to_json():
-    render_tab_header("📄", "Paper to JSON Extractor", "Extraktion von strukturierten Daten aus wissenschaftlichen PDFs.")
+    render_tab_header("description", "Paper ➔ JSON Extractor", "Extraktion von strukturierten Daten aus wissenschaftlichen PDFs.")
 
     db = LiteratureDB()
     llm_service = st.session_state.llm_service
@@ -83,7 +188,12 @@ def render_paper_to_json():
         key="paper_uploader"
     )
 
-    if uploaded_files and st.button(f"Papers analysieren ({len(uploaded_files)})", type="primary", icon="🚀"):
+    if uploaded_files and st.button(
+        f"Papers analysieren ({len(uploaded_files)})", 
+        type="primary", 
+        icon="🚀",
+        use_container_width=True
+    ):
         with st.status("Verarbeite Papers...", expanded=True) as status:
             results_container = st.container()
             
@@ -148,7 +258,7 @@ def render_paper_to_json():
 
 # --- Capability 2: Data to JSON ---
 def render_data_to_json():
-    render_tab_header("📊", "Data to JSON", "Verarbeitung von Maschinen-Messdaten aus Excel oder CSV.")
+    render_tab_header("query_stats", "Data ➔ JSON", "Verarbeitung von Maschinen-Messdaten aus Excel oder CSV.")
 
     store = WorkingStore()
     
@@ -204,7 +314,7 @@ def render_data_to_json():
                 'AirPower_Sperrluft', 'AirPower_BlasluftSpindelMitte'
             ]
 
-            if st.button("Metriken berechnen", type="primary", icon="⚙️"):
+            if st.button("Metriken berechnen", type="primary", icon="⚙️", use_container_width=True):
                 with st.spinner("Berechne KPIs..."):
                     elek_details, elek_total = DataParser.compute_metrics(df, vars_elektrisch)
                     pneu_details, pneu_total = DataParser.compute_metrics(df, vars_pneumatisch)
@@ -298,7 +408,7 @@ def render_data_to_json():
 
 # --- Capability 3: JSON Comparison ---
 def render_json_comparison():
-    render_tab_header("🔍", "JSON Comparison", "Vergleich von Audit-Daten mit Literatur-Benchmarks via LLM.")
+    render_tab_header("compare_arrows", "JSON Comparison", "Vergleich von Audit-Daten mit Literatur-Benchmarks via LLM.")
 
     lit_db = LiteratureDB()
     work_store = WorkingStore()
@@ -321,7 +431,7 @@ def render_json_comparison():
         selected_lit_id = lit_options.get(selected_lit_title)
 
     if selected_audit_file and selected_lit_id:
-        if st.button("Analyse starten", type="primary", icon="🚀"):
+        if st.button("Analyse starten", type="primary", icon="🚀", use_container_width=True):
             if not provider:
                 st.error("Bitte LLM-Provider konfigurieren.")
                 return
@@ -367,16 +477,20 @@ def render_json_comparison():
                 data=pdf_buffer,
                 file_name=f"comparison_{selected_audit_file.replace('.json', '')}.pdf",
                 mime="application/pdf",
-                icon="⬇️"
+                icon="⬇️",
+                use_container_width=True
             )
 
 # --- Main App ---
 def main():
     st.set_page_config(
-        page_title=settings.APP_NAME,
-        page_icon="🔍",
+        page_title="Factory-X Audit-App",
         layout="wide"
     )
+    
+    # Branding & Styling
+    st.logo("assets/FX_logo_top_left.png")
+    inject_custom_styles()
     
     # Session State initialisieren (muss zuerst passieren)
     init_session_state()
@@ -384,11 +498,24 @@ def main():
     # Sidebar rendern
     render_sidebar()
 
+    # Haupttitel
+    st.markdown(
+        """
+        <div style='display:flex; align-items:center; gap:24px; margin-bottom:1rem;'>
+            <span class='material-symbols-rounded' style='font-size:48px;'>analytics</span>
+            <span style='font-size:48px; font-weight:700; letter-spacing:0.8px;'>
+                Factory-X Audit-App
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     # Tabs for main content
     tab1, tab2, tab3 = st.tabs([
-        "📄 Paper to JSON", 
-        "📊 Data to JSON", 
-        "🔍 JSON Comparison"
+        "Paper ➔ JSON", 
+        "Data ➔ JSON", 
+        "JSON Comparison"
     ])
 
     with tab1:
