@@ -47,7 +47,7 @@ def inject_custom_styles():
     
     # Hintergrundkonfiguration (Blau mit Transparenz)
     bg_color_hex = COLORS.get("Blau", "#006DB9")
-    bg_opacity = 0.08
+    bg_opacity = 0.25
     
     # Hex zu RGB Konvertierung für die Nutzung in rgba()
     h = bg_color_hex.lstrip('#')
@@ -86,9 +86,17 @@ def inject_custom_styles():
     
     <style>
         /* 1. Globaler Hintergrund */
+        /* --- START BACKGROUND FADE SNIPPET --- */
+        /* Haupt-Hintergrund mit Radial Gradient (Fokus oben links, Rest transparent) */
         [data-testid="stAppViewContainer"] {{
-            background-color: {rgba_bg};
+            background: radial-gradient(
+                circle at top left, 
+                {rgba_bg} 0%, 
+                rgba(255, 255, 255, 0) 70%
+            ) !important;
+            background-attachment: fixed !important;
         }}
+        /* --- END BACKGROUND FADE SNIPPET --- */
         
         /* 2. Hintergrund-SVG */
         {bg_style}

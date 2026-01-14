@@ -37,7 +37,7 @@ COLORS: Dict[str, str] = {
 # Funktionale Zuweisungen für die App-Logik
 COLORS.update({
     "primary": COLORS["Hellblau"],   # Hellblau als Primary
-    "secondary": COLORS["Blau"],     # Blau als Secondary
+    "secondary": COLORS["Hellgrün"],     # Hellgrün als Secondary
     "success": COLORS["Dunkelgrün"],
     "warning": COLORS["Gelb"],
     "error": COLORS["Rot"]
