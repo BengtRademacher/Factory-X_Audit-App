@@ -22,13 +22,18 @@ class LLMService:
         self._init_providers()
 
     def _init_providers(self):
-        secrets = st.secrets
-
+        # We initialize with a placeholder if no key is found.
+        # The app.py sidebar will update the key dynamically.
+        secrets = getattr(st, "secrets", {})
+        
         # OpenRouter (Primary Provider)
+        api_key = None
         if "openrouter" in secrets:
             api_key = secrets["openrouter"].get("api_key")
-            if api_key and api_key.startswith("sk-or-"):
-                self.providers["openrouter"] = OpenRouterProvider(api_key=api_key)
+        
+        # Even if api_key is None, we create the provider. 
+        # It will be updated by the sidebar.
+        self.providers["openrouter"] = OpenRouterProvider(api_key=api_key if api_key else "")
 
     def list_providers(self) -> List[str]:
         return list(self.providers.keys())

@@ -152,12 +152,21 @@ def render_sidebar():
 
             # Model Selection
             with st.spinner("Loading models..."):
-                or_models = llm_service.get_openrouter_models(free_only=free_only, vision_only=True)
+                or_models = llm_service.get_openrouter_models(free_only=free_only, vision_only=False)
             
             if not or_models:
                 st.error("No suitable OpenRouter models found.")
                 st.session_state.llm_model = "openrouter/auto"
             else:
+                # Legend for capability tags
+                st.markdown("""
+                <div style='background-color: rgba(0, 109, 185, 0.1); padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                    <small><b>Model Capabilities:</b><br/>
+                    👁️ Vision (PDF, Images)<br/>
+                    📝 Text Only (CSV, Excel, JSON)</small>
+                </div>
+                """, unsafe_allow_html=True)
+
                 # Ensure previously selected model is still in the list, otherwise pick first
                 current_model = st.session_state.llm_model
                 model_labels = list(or_models.keys())
@@ -175,6 +184,10 @@ def render_sidebar():
                     index=current_index
                 )
                 st.session_state.llm_model = or_models[selected_model_label]
+                
+                # Ensure a model is always selected even if selectbox hasn't updated yet
+                if st.session_state.llm_model is None and model_labels:
+                    st.session_state.llm_model = or_models[model_labels[0]]
                 st.session_state.llm_provider = "openrouter" # Force openrouter for now
                 
                 # Model Details
@@ -186,7 +199,7 @@ def render_sidebar():
                         st.info("Full model access enabled.")
 
         st.divider()
-        st.caption("Factory-X Audit-App v1.3")
+        st.caption("Factory-X Audit-App v1.4")
 
 
 
@@ -220,6 +233,12 @@ def render_paper_to_json():
     provider_name = st.session_state.llm_provider
     provider = llm_service.get_provider(provider_name, model=st.session_state.llm_model) if provider_name else None
 
+    # Check for vision capability if model is selected
+    is_vision_model = False
+    if st.session_state.llm_model:
+        model_id = st.session_state.llm_model.lower()
+        is_vision_model = any(kw in model_id for kw in ["vision", "gemini", "claude-3", "pixtral", "llava"])
+
     if not provider:
         st.error("Please configure an LLM provider in the sidebar.")
         return
@@ -231,14 +250,20 @@ def render_paper_to_json():
         key="paper_uploader"
     )
 
-    if uploaded_files and st.button(
-        f"Analyze Documents ({len(uploaded_files)})",
-        type="primary",
-        icon="🚀",
-        use_container_width=True
-    ):
-        with st.status("Processing documents...", expanded=True) as status:
-            results_container = st.container()
+    if uploaded_files:
+        # Warning if PDF is uploaded but model has no vision
+        has_pdf = any(f.name.lower().endswith(".pdf") for f in uploaded_files)
+        if has_pdf and not is_vision_model:
+            st.warning("⚠️ Warning: You have uploaded a PDF, but the selected model might not support vision/PDF analysis. This could lead to errors.")
+
+        if st.button(
+            f"Analyze Documents ({len(uploaded_files)})",
+            type="primary",
+            icon="🚀",
+            use_container_width=True
+        ):
+            with st.status("Processing documents...", expanded=True) as status:
+                results_container = st.container()
 
             for i, doc_file in enumerate(uploaded_files):
                 st.write(f"⏳ **{doc_file.name}** ({i+1}/{len(uploaded_files)})")
@@ -501,9 +526,14 @@ def render_json_comparison():
             audits_data = {f: work_store.load_audit(f) for f in selected_audit_files}
             benchmarks_data = {title: lit_db.get_entry_by_id(lit_options[title]) for title in selected_lit_titles}
 
-            # Create a more concise version for the LLM to save tokens and avoid timeouts
-            # especially for matrix comparisons
+            # Matrix size check for adaptive summarization (to maintain quality vs token limits)
+            matrix_size = len(selected_audit_files) * len(selected_lit_titles)
+            use_summary = matrix_size > 4
+
             def summarize_for_llm(data, is_benchmark=False):
+                if not use_summary:
+                    return data # Full data for best quality when matrix is small
+                
                 summary = {
                     "metadata": data.get("metadata", {}),
                     "Overall Summary": data.get("Overall Summary", {}),
@@ -515,15 +545,20 @@ def render_json_comparison():
                     summary["Pneumatic Total"] = data.get("Pneumatisch", {}).get("Total Pneumatisch", {})
                 return summary
 
-            audits_summary = {f: summarize_for_llm(d) for f, d in audits_data.items()}
-            benchmarks_summary = {t: summarize_for_llm(d, True) for t, d in benchmarks_data.items()}
+            audits_to_send = {f: summarize_for_llm(d) for f, d in audits_data.items()}
+            benchmarks_to_send = {t: summarize_for_llm(d, True) for t, d in benchmarks_data.items()}
 
             start_time = time.time()
             with st.status("AI is analyzing the comparison...", expanded=True) as status:
                 try:
-                    # Construct matrix prompt with summarized data
-                    audit_json_str = json.dumps(audits_summary, indent=2)
-                    benchmark_json_str = json.dumps(benchmarks_summary, indent=2)
+                    # Construct matrix prompt
+                    audit_json_str = json.dumps(audits_to_send, indent=2)
+                    benchmark_json_str = json.dumps(benchmarks_to_send, indent=2)
+                    
+                    if use_summary:
+                        st.info("Large matrix detected: Using summarized data to ensure stability.")
+                    else:
+                        st.success("Small matrix: Using full data for maximum analysis quality.")
                     
                     prompt = COMPARISON_PROMPT.format(
                         audit_json=audit_json_str,

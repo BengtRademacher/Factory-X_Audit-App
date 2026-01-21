@@ -22,6 +22,9 @@ class OpenRouterProvider:
 
     def generate(self, prompt: str, system_instruction: Optional[str] = None, max_retries: int = 5) -> str:
         """Generates a response with retry logic for rate limits."""
+        if not self.model_name:
+            return "Error: No model selected. Please select a model in the sidebar."
+
         messages = []
         if system_instruction:
             messages.append({"role": "system", "content": system_instruction})
@@ -34,8 +37,10 @@ class OpenRouterProvider:
 
         for attempt in range(max_retries):
             try:
+                # Use a more robust way to construct the URL
+                url = f"{self.base_url.rstrip('/')}/chat/completions"
                 response = requests.post(
-                    f"{self.base_url}/chat/completions",
+                    url,
                     json=payload,
                     headers=self._get_headers(),
                     timeout=60
@@ -44,29 +49,45 @@ class OpenRouterProvider:
                 if response.status_code == 429:
                     wait_time = (2 ** attempt) + 1
                     # Try to read retryDelay from header or body
-                    retry_info = response.json().get("error", {}).get("details", [{}])[0].get("retryDelay", "")
-                    if retry_info:
-                        try:
-                            # Extract seconds if possible
+                    try:
+                        error_json = response.json()
+                        retry_info = error_json.get("error", {}).get("details", [{}])[0].get("retryDelay", "")
+                        if retry_info:
                             seconds = re.search(r'(\d+\.?\d*)', retry_info)
                             if seconds:
                                 wait_time = float(seconds.group(1)) + 1
-                        except:
-                            pass
+                    except:
+                        pass
                     
                     time.sleep(wait_time)
                     continue
 
-                response.raise_for_status()
+                if response.status_code != 200:
+                    status_code = response.status_code
+                    try:
+                        error_data = response.json()
+                        error_msg = error_data.get("error", {}).get("message", response.text)
+                    except:
+                        error_msg = response.text
+                    
+                    if status_code == 404:
+                        return f"Error 404: Model '{self.model_name}' not found on OpenRouter. This can happen if the model is currently unavailable or the ID is incorrect."
+                    elif status_code == 401:
+                        return "Error 401: API key invalid or expired."
+                    elif status_code == 400:
+                        return f"Error 400: Bad Request. Model: {self.model_name}. Message: {error_msg}"
+                    else:
+                        return f"API Error ({status_code}): {error_msg}"
+
                 result = response.json()
                 return result["choices"][0]["message"]["content"].strip()
 
             except Exception as e:
                 if attempt == max_retries - 1:
-                    raise e
+                    return f"Connection Error after {max_retries} attempts: {str(e)}"
                 time.sleep(2 ** attempt)
 
-        return "Error: Maximum retries reached (Rate limit or timeout)."
+        return "Error: Maximum retries reached."
 
     def generate_from_file(self, prompt: str, file_bytes: bytes, mime_type: str = "application/pdf") -> str:
         """
@@ -74,6 +95,9 @@ class OpenRouterProvider:
         Note: OpenRouter supports files depending on the target model.
         We use the OpenAI-compatible format for vision/files.
         """
+        if not self.model_name:
+            return "Error: No model selected. Please select a model in the sidebar."
+
         base64_file = base64.b64encode(file_bytes).decode("utf-8")
         
         # For PDFs we need to check if the model supports them directly.
@@ -101,27 +125,26 @@ class OpenRouterProvider:
         }
 
         try:
+            url = f"{self.base_url.rstrip('/')}/chat/completions"
             response = requests.post(
-                f"{self.base_url}/chat/completions",
+                url,
                 json=payload,
                 headers=self._get_headers(),
                 timeout=90
             )
             
             if response.status_code != 200:
-                error_data = {}
+                status_code = response.status_code
                 try:
                     error_data = response.json()
+                    error_msg = error_data.get("error", {}).get("message", response.text)
                 except:
-                    pass
-                
-                status_code = response.status_code
-                error_msg = error_data.get("error", {}).get("message", response.text)
+                    error_msg = response.text
                 
                 if status_code == 404:
-                    return f"Error 404: Model '{self.model_name}' not found or endpoint is incorrect."
+                    return f"Error 404: Model '{self.model_name}' not found on OpenRouter. Vision/PDF analysis might not be supported by this model."
                 elif status_code == 400:
-                    return f"Error 400: Invalid request. The model might not support PDF files via OpenRouter. Details: {error_msg}"
+                    return f"Error 400: Bad Request. The model might not support PDF files via OpenRouter. Details: {error_msg}"
                 elif status_code == 401:
                     return "Error 401: API key invalid or expired."
                 elif status_code == 429:
@@ -131,4 +154,4 @@ class OpenRouterProvider:
 
             return response.json()["choices"][0]["message"]["content"].strip()
         except Exception as e:
-            return f"Connection error: {str(e)}"
+            return f"Connection Error: {str(e)}"

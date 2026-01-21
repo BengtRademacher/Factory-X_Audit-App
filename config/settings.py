@@ -5,7 +5,7 @@ from typing import Dict, List
 class Settings(BaseSettings):
     """Central configuration for the Audit App."""
     
-    APP_NAME: str = "Audit App v1.3"
+    APP_NAME: str = "Audit App v1.4"
     
     # Paths
     BASE_DIR: Path = Path(__file__).parent.parent

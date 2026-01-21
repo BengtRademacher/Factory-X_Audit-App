@@ -57,20 +57,30 @@ class OpenRouterModelRegistry:
         return filtered
 
     @classmethod
-    def get_model_options(cls, free_only: bool = True, vision_only: bool = True) -> Dict[str, str]:
+    def get_model_options(cls, free_only: bool = True, vision_only: bool = False) -> Dict[str, str]:
         """Gibt ein Dictionary {Anzeigename: ID} fuer Streamlit Selectboxen zurueck."""
-        models = cls.get_models(free_only=free_only, vision_only=vision_only)
+        models = cls.get_models(free_only=free_only, vision_only=False) # Get all for tagging
         options = {}
         for m in models:
+            model_id = m.get("id", "").lower()
             name = m.get("name", m.get("id"))
+            
+            # Capability Detection
+            is_vision = any(keyword in model_id for keyword in ["vision", "gemini", "claude-3", "pixtral", "llava"])
+            
+            if vision_only and not is_vision:
+                continue
+                
             pricing = m.get("pricing", {})
             p_prompt = float(pricing.get("prompt", 0)) * 1000000
             
-            # Anzeige-Label bereinigt (keine Emojis, kein (Free) Suffix fuer kostenlose Modelle)
+            # Tagging with Emojis
+            tag = "👁️" if is_vision else "📝"
+            
             if p_prompt == 0:
-                label = name
+                label = f"{tag} {name}"
             else:
-                label = f"💰 {name} (~${p_prompt:.2f}/M tokens)"
+                label = f"{tag} 💰 {name} (~${p_prompt:.2f}/M)"
                 
             options[label] = m.get("id")
             
