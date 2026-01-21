@@ -3,11 +3,11 @@ from pathlib import Path
 from typing import Dict, List
 
 class Settings(BaseSettings):
-    """Zentrale Konfiguration fuer die Audit App."""
+    """Central configuration for the Audit App."""
     
-    APP_NAME: str = "Audit App V02"
+    APP_NAME: str = "Audit App v1.3"
     
-    # Pfade
+    # Paths
     BASE_DIR: Path = Path(__file__).parent.parent
     DATA_DIR: Path = BASE_DIR / "data"
     LITERATURE_DIR: Path = DATA_DIR / "literature"

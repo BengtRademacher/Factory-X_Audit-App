@@ -39,23 +39,23 @@ class VisualizationService:
     
     @staticmethod
     def plot_energy_distribution(data: Dict[str, Any]) -> Optional[go.Figure]:
-        """Erstellt ein Sunburst-Chart der Energieverteilung."""
+        """Creates a sunburst chart of energy distribution."""
         rows = []
         
-        # Elektrische Daten
+        # Electric data
         if "Elektrisch" in data and "Variables" in data["Elektrisch"]:
             for var, metrics in data["Elektrisch"]["Variables"].items():
                 rows.append({
-                    "Group": "Elektrisch",
+                    "Group": "Electric",
                     "Component": var,
                     "Energy (kWh)": metrics.get("total_energy_kWh", 0)
                 })
                 
-        # Pneumatische Daten
+        # Pneumatic data
         if "Pneumatisch" in data and "Variables" in data["Pneumatisch"]:
             for var, metrics in data["Pneumatisch"]["Variables"].items():
                 rows.append({
-                    "Group": "Pneumatisch",
+                    "Group": "Pneumatic",
                     "Component": var,
                     "Energy (kWh)": metrics.get("total_energy_kWh", 0)
                 })
@@ -70,11 +70,11 @@ class VisualizationService:
             values='Energy (kWh)',
             color='Group',
             color_discrete_map={
-                "Elektrisch": CHART_COLORS["electric"],
-                "Pneumatisch": CHART_COLORS["pneumatic"]
+                "Electric": CHART_COLORS["electric"],
+                "Pneumatic": CHART_COLORS["secondary"] # Use secondary for pneumatic
             }
         )
-        fig = VisualizationService._apply_layout(fig, "Energieverteilung nach Komponenten")
+        fig = VisualizationService._apply_layout(fig, "Energy Distribution by Component")
         fig.update_traces(
             textinfo="label+percent entry",
             insidetextorientation='radial'
@@ -83,11 +83,11 @@ class VisualizationService:
 
     @staticmethod
     def plot_kpi_comparison(audit_data: Dict[str, Any], benchmark_data: Dict[str, Any]) -> go.Figure:
-        """Erstellt ein Bar-Chart zum Vergleich Audit vs Benchmark."""
+        """Creates a bar chart for Audit vs Benchmark comparison."""
         audit_total = audit_data.get("Overall Summary", {}).get("Total Energy (kWh)", 0)
         benchmark_total = benchmark_data.get("energy_data", {}).get("energy_usage", "0")
         
-        # Benchmark-Wert extrahieren
+        # Extract benchmark value
         try:
             benchmark_val = float(str(benchmark_total).split()[0])
         except (ValueError, AttributeError):
@@ -95,17 +95,17 @@ class VisualizationService:
             
         fig = go.Figure()
         fig.add_trace(go.Bar(
-            x=["Audit-Daten", "Benchmark"],
+            x=["Audit Data", "Benchmark"],
             y=[audit_total, benchmark_val],
             marker_color=[CHART_COLORS["primary"], CHART_COLORS["secondary"]],
             text=[f"{audit_total:.4f}", f"{benchmark_val:.4f}"],
             textposition='outside',
-            name="Energie (kWh)"
+            name="Energy (kWh)"
         ))
         
-        fig = VisualizationService._apply_layout(fig, "Energievergleich: Audit vs. Benchmark")
+        fig = VisualizationService._apply_layout(fig, "Energy Comparison: Audit vs. Benchmark")
         fig.update_layout(
-            yaxis_title="Energie (kWh)",
+            yaxis_title="Energy (kWh)",
             showlegend=False,
             bargap=0.4
         )
@@ -113,27 +113,34 @@ class VisualizationService:
         return fig
 
     @staticmethod
-    def plot_component_comparison(audit_details: Dict[str, Any], group_name: str = "Elektrisch") -> Optional[go.Figure]:
-        """Bar-Chart fuer einzelne Komponenten innerhalb einer Gruppe."""
-        if group_name not in audit_details or "Variables" not in audit_details[group_name]:
+    def plot_component_comparison(audit_details: Dict[str, Any], group_name: str = "Electric") -> Optional[go.Figure]:
+        """Bar chart for individual components within a group."""
+        if group_name not in audit_details and (group_name == "Electric" and "Elektrisch" in audit_details):
+             group_key = "Elektrisch"
+        elif group_name not in audit_details and (group_name == "Pneumatic" and "Pneumatisch" in audit_details):
+             group_key = "Pneumatisch"
+        else:
+             group_key = group_name
+
+        if group_key not in audit_details or "Variables" not in audit_details[group_key]:
             return None
             
-        vars_data = audit_details[group_name]["Variables"]
+        vars_data = audit_details[group_key]["Variables"]
         df = pd.DataFrame.from_dict(vars_data, orient='index').reset_index()
         df.rename(columns={'index': 'Component'}, inplace=True)
         df = df.sort_values('total_energy_kWh', ascending=True)
         
-        color = CHART_COLORS["electric"] if group_name == "Elektrisch" else CHART_COLORS["pneumatic"]
+        color = CHART_COLORS["electric"] if group_key == "Elektrisch" or group_key == "Electric" else CHART_COLORS["pneumatic"]
         
         fig = px.bar(
             df, 
             y='Component', 
             x='total_energy_kWh',
             orientation='h',
-            labels={'total_energy_kWh': 'Energie (kWh)', 'Component': ''}
+            labels={'total_energy_kWh': 'Energy (kWh)', 'Component': ''}
         )
         fig.update_traces(marker_color=color)
-        fig = VisualizationService._apply_layout(fig, f"Energie pro Komponente ({group_name})")
+        fig = VisualizationService._apply_layout(fig, f"Energy per Component ({group_name})")
         fig.update_xaxes(gridcolor=CHART_COLORS["grid"])
         return fig
 
