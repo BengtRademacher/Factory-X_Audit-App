@@ -49,14 +49,13 @@ class OpenRouterProvider:
                 
                 if response.status_code == 429:
                     wait_time = (2 ** attempt) + 1
-                    # Try to read retryDelay from header or body
                     try:
                         error_json = response.json()
                         retry_info = error_json.get("error", {}).get("details", [{}])[0].get("retryDelay", "")
                         if retry_info:
                             seconds = re.search(r'(\d+\.?\d*)', retry_info)
                             if seconds:
-                                wait_time = float(seconds.group(1)) + 1
+                                wait_time = max(float(seconds.group(1)) + 1, wait_time)
                     except:
                         pass
                     
@@ -86,9 +85,9 @@ class OpenRouterProvider:
             except Exception as e:
                 if attempt == max_retries - 1:
                     return f"Connection Error after {max_retries} attempts: {str(e)}"
-                time.sleep(2 ** attempt)
+                time.sleep(2 ** attempt + 1)
 
-        return "Error: Maximum retries reached."
+        return "Error: Rate limit exceeded after multiple retries. Please wait a moment and try again, or select a different model."
 
     def generate_stream(self, prompt: str, system_instruction: Optional[str] = None, max_retries: int = 5):
         """Generates a streaming response from OpenRouter with retry logic for rate limits."""
@@ -126,7 +125,7 @@ class OpenRouterProvider:
                         if retry_info:
                             seconds = re.search(r'(\d+\.?\d*)', retry_info)
                             if seconds:
-                                wait_time = float(seconds.group(1)) + 1
+                                wait_time = max(float(seconds.group(1)) + 1, wait_time)
                     except:
                         pass
                     
@@ -142,8 +141,7 @@ class OpenRouterProvider:
                     except:
                         error_msg = response.text
                     
-                    yield f"API Error ({status_code}): {error_msg}"
-                    return
+                    raise Exception(f"API Error ({status_code}): {error_msg}")
 
                 for line in response.iter_lines():
                     if line:
@@ -163,9 +161,8 @@ class OpenRouterProvider:
 
             except Exception as e:
                 if attempt == max_retries - 1:
-                    yield f"Connection Error after {max_retries} attempts: {str(e)}"
-                    return
-                time.sleep(2 ** attempt)
+                    raise e
+                time.sleep(2 ** attempt + 1)
 
     def generate_from_file(self, prompt: str, file_bytes: bytes, mime_type: str = "application/pdf", max_retries: int = 5) -> str:
         """
@@ -220,7 +217,7 @@ class OpenRouterProvider:
                         if retry_info:
                             seconds = re.search(r'(\d+\.?\d*)', retry_info)
                             if seconds:
-                                wait_time = float(seconds.group(1)) + 1
+                                wait_time = max(float(seconds.group(1)) + 1, wait_time)
                     except:
                         pass
                     
@@ -249,6 +246,6 @@ class OpenRouterProvider:
             except Exception as e:
                 if attempt == max_retries - 1:
                     return f"Connection Error after {max_retries} attempts: {str(e)}"
-                time.sleep(2 ** attempt)
+                time.sleep(2 ** attempt + 1)
         
-        return "Error: Maximum retries reached."
+        return "Error: Rate limit exceeded after multiple retries. Please wait a moment and try again, or select a different model."

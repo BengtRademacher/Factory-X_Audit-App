@@ -150,6 +150,7 @@ def render_sidebar():
                 api_key = st.secrets["openrouter"].get("api_key", "")
                 free_only = True
                 st.info("Using default key (Free models only)")
+                st.caption("Rate limits may apply. If errors occur, please wait ~30s between requests.")
 
             # Update provider with current key
             if "openrouter" in llm_service.providers:
@@ -749,18 +750,26 @@ def render_chat_assistant():
 
         # Generate response
         with st.chat_message("assistant"):
-            if st.session_state.enable_streaming:
-                response_placeholder = st.empty()
-                full_response = ""
-                # Use st.write_stream for the generator
-                full_response = st.write_stream(provider.generate_stream(full_prompt, system_instruction=st.session_state.system_prompt))
-            else:
-                with st.spinner("Thinking..."):
-                    full_response = provider.generate(full_prompt, system_instruction=st.session_state.system_prompt)
-                    st.markdown(full_response)
+            full_response = None
+            try:
+                if st.session_state.enable_streaming:
+                    full_response = st.write_stream(provider.generate_stream(full_prompt, system_instruction=st.session_state.system_prompt))
+            except Exception as e:
+                st.warning("Streaming failed, falling back to standard mode...")
+            
+            # Fallback or if streaming is disabled
+            if full_response is None:
+                try:
+                    with st.spinner("Thinking..."):
+                        full_response = provider.generate(full_prompt, system_instruction=st.session_state.system_prompt)
+                        st.markdown(full_response)
+                except Exception as e:
+                    handle_llm_error(e)
+                    full_response = None
         
-        # Add assistant message to history
-        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+        # Add assistant message to history only if successful
+        if full_response:
+            st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 def main():
     st.set_page_config(
