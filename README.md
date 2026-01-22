@@ -1,63 +1,85 @@
-# Factory-X Audit-App v1.2
+<p align="center">
+  <img src="assets/FX_logo_top_left.png" alt="Factory-X Logo" width="300">
+</p>
 
-*Stand: 14. Januar 2026*
+# Factory-X Audit-App v1.5
 
-Die Factory-X Audit-App ist eine Streamlit-basierte Anwendung zur automatisierten Extraktion, Verarbeitung und Bewertung von Energiedaten aus Fertigungsprozessen. Sie kombiniert moderne LLM-Technologie mit klassischer Datenanalyse, um wissenschaftliche Publikationen und reale Maschinendaten vergleichbar zu machen.
+*Stand: 22. Januar 2026*
+
+Die **Factory-X Audit-App** ist eine Streamlit-basierte Anwendung zur automatisierten Extraktion, Verarbeitung und Bewertung von Energiedaten aus Fertigungsprozessen. Sie kombiniert moderne LLM-Technologie mit klassischer Datenanalyse, um wissenschaftliche Publikationen und reale Maschinendaten vergleichbar zu machen.
 
 ## Kernfunktionen
 
-1.  **Paper to JSON**: Extraktion strukturierter Daten aus wissenschaftlichen PDFs mittels LLMs. Die Ergebnisse werden in einer lokalen Literaturdatenbank gespeichert.
-2.  **Data to JSON**: Verarbeitung von Maschinen-Messdaten (Excel/CSV). Automatische Berechnung von Energie-KPIs, Duty Cycles und Leistungswerten für elektrische und pneumatische Komponenten.
-3.  **JSON Comparison**: KI-gestützter Vergleich zwischen Audit-Ergebnissen und Literatur-Benchmarks inklusive PDF-Export der Analyseergebnisse.
+| Tab | Funktion |
+|-----|----------|
+| **Document → JSON** | Extraktion strukturierter Daten aus PDFs, CSV, Excel oder JSON mittels LLMs. Die Ergebnisse werden in einer lokalen Literaturdatenbank gespeichert. |
+| **Data → JSON** | Verarbeitung von Maschinen-Messdaten (Excel/CSV). Automatische Berechnung von Energie-KPIs, Duty Cycles und Leistungswerten für elektrische und pneumatische Komponenten. |
+| **JSON Comparison** | KI-gestützter Vergleich zwischen Audit-Ergebnissen und Literatur-Benchmarks inklusive PDF-Export der Analyseergebnisse. |
+| **Ask about data** | Kontextbezogener Chat-Assistent für tiefgehende Analysen der Audit-Daten mit konfigurierbaren System-Prompts. |
 
-## Design und Styling
+## Demo
 
-Die Anwendung folgt dem Factory-X Design-Guide für eine konsistente Benutzeroberfläche:
-- **Material Design**: Nutzung von Material Symbols Rounded für intuitive Navigation.
-- **Responsive Layout**: Optimierte Darstellung für verschiedene Bildschirmgrößen im Wide-Mode.
-- **Branding**: Integration des Factory-X Logos und spezialisierter UI-Komponenten.
+Die App ist live verfügbar auf der **Streamlit Community Cloud**:
 
-Details zur Gestaltung finden sich im `STYLING_GUIDE.md` und der `layout_assets.md`.
+👉 [**Factory-X Audit-App starten**](https://factory-x-audit-app.streamlit.app)
 
-## Installation und Setup
+## Installation (Lokale Entwicklung)
 
-1.  **Repository vorbereiten**: Klonen oder laden Sie das Projekt herunter.
-2.  **Abhängigkeiten installieren**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-3.  **Konfiguration**: Erstellen Sie eine `.streamlit/secrets.toml` im Hauptverzeichnis und hinterlegen Sie Ihre API-Schlüssel:
-    ```toml
-    [gemini]
-    api_key = "DEIN_GEMINI_API_KEY"
+1. **Repository klonen**:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/Factory-X_Audit-App.git
+   cd Factory-X_Audit-App
+   ```
 
-    [openai]
-    api_key = "DEIN_OPENAI_API_KEY"
-    ```
+2. **Abhängigkeiten installieren**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Nutzung
+3. **API-Key konfigurieren** – Erstellen Sie `.streamlit/secrets.toml`:
+   ```toml
+   [openrouter]
+   api_key = "sk-or-v1-DEIN_OPENROUTER_API_KEY"
+   ```
+   > ⚠️ Diese Datei ist in `.gitignore` enthalten und wird nicht committed.
 
-Starten Sie die Anwendung über die Kommandozeile:
-```bash
-streamlit run app.py
-```
+4. **Anwendung starten**:
+   ```bash
+   streamlit run app.py
+   ```
 
 ## Projektstruktur
 
-- `app.py`: Hauptanwendung und UI-Logik.
-- `config/`: Zentrale Einstellungen und LLM-Prompts.
-- `core/`: Logik für LLM-Provider, Datenverarbeitung und Parsing.
-- `database/`: Management der Literaturdatenbank und des Audit-Stores.
-- `services/`: Dienste für Visualisierung (Plotly) und PDF-Export.
-- `data/`: Lokale Ablage für PDFs, extrahierte JSON-Daten und Audits.
+```
+Factory-X_Audit-App/
+├── app.py                 # Hauptanwendung und UI-Logik
+├── config/                # Zentrale Einstellungen und LLM-Prompts
+├── core/                  # LLM-Provider, Datenverarbeitung, Parsing
+├── database/              # Literaturdatenbank und Audit-Store
+├── services/              # Visualisierung (Plotly) und PDF-Export
+├── assets/                # Logos und Styling-Assets
+└── data/                  # Lokale Ablage für Audits (gitignored)
+```
+
+## Design und Styling
+
+Die Anwendung folgt dem **Factory-X Design-Guide**:
+- **Material Design**: Material Symbols Rounded für intuitive Navigation
+- **Responsive Layout**: Optimiert für Wide-Mode
+- **Branding**: Factory-X Logos und Farbschema
 
 ## Technologie-Stack
 
-- **Backend/Frontend**: Streamlit
-- **KI/LLM Integration**: Google Gemini, OpenAI, Ollama
-- **Datenanalyse**: Pandas, NumPy
-- **Datenvisualisierung**: Plotly
-- **PDF-Verarbeitung**: PyPDF2, ReportLab
+| Kategorie | Technologie |
+|-----------|-------------|
+| Frontend/Backend | Streamlit |
+| KI/LLM Integration | OpenRouter (Zugang zu 100+ Modellen) |
+| Datenanalyse | Pandas, NumPy |
+| Visualisierung | Plotly |
+| PDF-Export | ReportLab |
 
 ---
-*Hinweis: Diese Anwendung wurde im Rahmen des Factory-X Projekts zur Steigerung der Energieeffizienz in der Produktion entwickelt.*
+
+<p align="center">
+  <i>Entwickelt im Rahmen des Factory-X Projekts zur Steigerung der Energieeffizienz in der Produktion.</i>
+</p>
