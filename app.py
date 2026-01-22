@@ -31,6 +31,11 @@ def init_session_state():
         "machine_state": "Idle",
         "material": "Aluminum",
         "last_audit_results": None,
+        "key_mode_pills": "Use default API key",
+        "chat_history": [],
+        "system_prompt": "You are an expert for energy efficiency in manufacturing. Analyze the provided audit data and benchmarks meticulously.",
+        "last_applied_preset": "Default Agent",
+        "enable_streaming": True,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -122,15 +127,15 @@ def render_sidebar():
     with st.sidebar:
         st.markdown("### Settings")
 
-        with st.expander("🤖 AI Backend", expanded=True):
+        with st.expander("🤖 API Key", expanded=True):
             # API Key Selection
-            key_mode = st.radio(
+            key_mode = st.pills(
                 "API Key Source",
                 options=["Use default API key", "Enter custom API key"],
-                index=1 if st.session_state.use_custom_key else 0,
-                key="key_mode_radio"
+                selection_mode="single",
+                key="key_mode_pills"
             )
-            st.session_state.use_custom_key = (key_mode == "Enter custom API key")
+            st.session_state.use_custom_key = (st.session_state.key_mode_pills == "Enter custom API key")
 
             if st.session_state.use_custom_key:
                 st.session_state.custom_api_key = st.text_input(
@@ -160,8 +165,8 @@ def render_sidebar():
             else:
                 # Legend for capability tags
                 st.markdown("""
-                <div style='background-color: rgba(0, 109, 185, 0.1); padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
-                    <small><b>Model Capabilities:</b><br/>
+                <div style='background-color: #f0f2f6; padding: 5px; border-radius: 10px; color: #31333f; margin-bottom: 15px;'>
+                    <small><b>Model Capabilities</b><br/>
                     👁️ Vision (PDF, Images)<br/>
                     📝 Text Only (CSV, Excel, JSON)</small>
                 </div>
@@ -191,15 +196,14 @@ def render_sidebar():
                 st.session_state.llm_provider = "openrouter" # Force openrouter for now
                 
                 # Model Details
-                with st.expander("ℹ️ Model Info", expanded=False):
-                    st.caption(f"ID: `{st.session_state.llm_model}`")
-                    if free_only:
-                        st.success("Free document model selected.")
-                    else:
-                        st.info("Full model access enabled.")
+                st.caption(f"ID: `{st.session_state.llm_model}`")
+                if free_only:
+                    st.success("Free document model selected.")
+                else:
+                    st.info("Full model access enabled.")
 
         st.divider()
-        st.caption("Factory-X Audit-App v1.4")
+        st.caption("Factory-X Audit-App v1.5")
 
 
 
@@ -638,6 +642,125 @@ def render_json_comparison():
                 use_container_width=True
             )
 
+def render_chat_assistant():
+    render_tab_header("chat", "Ask about data", "Context-aware chat assistant for deeper analysis of your audit data.")
+
+    lit_db = LiteratureDB()
+    work_store = WorkingStore()
+    llm_service = st.session_state.llm_service
+    provider_name = st.session_state.llm_provider
+    provider = llm_service.get_provider(provider_name, model=st.session_state.llm_model) if provider_name else None
+
+    # 🛠️ AI Configuration
+    with st.expander("Configuration", expanded=False):
+        col_p1, col_p2 = st.columns([2, 1])
+        with col_p2:
+            prompt_presets = {
+                "Default Agent": "You are an expert for energy efficiency in manufacturing. Analyze the provided audit data and benchmarks meticulously.",
+                "Critical Auditor": "You are a critical energy auditor. Your goal is to find hidden inefficiencies and question every data point. Be strict and precise.",
+                "Data Analyst": "You are a data scientist. Focus on statistical correlations, patterns in machine states, and numerical KPIs."
+            }
+            
+            def apply_preset_callback():
+                preset_name = st.session_state.preset_selector
+                st.session_state.system_prompt = prompt_presets[preset_name]
+                st.session_state.last_applied_preset = preset_name
+
+            preset_options = list(prompt_presets.keys())
+            try:
+                current_idx = preset_options.index(st.session_state.get("last_applied_preset", "Default Agent"))
+            except ValueError:
+                current_idx = 0
+
+            selected_preset = st.selectbox(
+                "Prompt Presets", 
+                options=preset_options,
+                index=current_idx,
+                key="preset_selector",
+                on_change=apply_preset_callback
+            )
+            
+            if st.button("Update Preset", icon="🔄"):
+                st.session_state.system_prompt = prompt_presets[selected_preset]
+                st.session_state.last_applied_preset = selected_preset
+                st.rerun()
+            
+            st.session_state.enable_streaming = st.toggle("Enable Live Streaming", value=st.session_state.enable_streaming)
+
+        with col_p1:
+            st.session_state.system_prompt = st.text_area(
+                "System Prompt",
+                value=st.session_state.system_prompt,
+                height=150,
+                help="Defines the behavior and expertise of the AI."
+            )
+
+    st.divider()
+
+    # Context Selection
+    col_c1, col_c2 = st.columns(2)
+    with col_c1:
+        audit_files = work_store.list_audits()
+        selected_audits = st.multiselect("Include Audits as Context", options=audit_files)
+    with col_c2:
+        lit_entries = lit_db.get_all_entries()
+        lit_options = {e['title']: e['id'] for e in lit_entries}
+        selected_lits = st.multiselect("Include Benchmarks as Context", options=list(lit_options.keys()))
+
+    if st.button("Clear Chat History", icon="🗑️"):
+        st.session_state.chat_history = []
+        st.rerun()
+
+    # Chat Interface
+    chat_container = st.container()
+    
+    with chat_container:
+        for message in st.session_state.chat_history:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+    if prompt := st.chat_input("Ask a question about your data..."):
+        if not provider:
+            st.error("Please configure an LLM provider in the sidebar.")
+            return
+
+        # Prepare context string
+        context_parts = []
+        if selected_audits:
+            context_parts.append("### AUDIT DATA ###")
+            for f in selected_audits:
+                data = work_store.load_audit(f)
+                context_parts.append(f"File: {f}\n{json.dumps(data, indent=2)}")
+        
+        if selected_lits:
+            context_parts.append("### BENCHMARK DATA ###")
+            for title in selected_lits:
+                data = lit_db.get_entry_by_id(lit_options[title])
+                context_parts.append(f"Benchmark: {title}\n{json.dumps(data, indent=2)}")
+
+        full_prompt = prompt
+        if context_parts:
+            full_prompt = f"CONTEXT INFORMATION:\n\n" + "\n\n".join(context_parts) + f"\n\nUSER QUESTION: {prompt}"
+
+        # Add user message to history
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Generate response
+        with st.chat_message("assistant"):
+            if st.session_state.enable_streaming:
+                response_placeholder = st.empty()
+                full_response = ""
+                # Use st.write_stream for the generator
+                full_response = st.write_stream(provider.generate_stream(full_prompt, system_instruction=st.session_state.system_prompt))
+            else:
+                with st.spinner("Thinking..."):
+                    full_response = provider.generate(full_prompt, system_instruction=st.session_state.system_prompt)
+                    st.markdown(full_response)
+        
+        # Add assistant message to history
+        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 def main():
     st.set_page_config(
@@ -663,10 +786,11 @@ def main():
         unsafe_allow_html=True,
     )
 
-    tab1, tab2, tab3 = st.tabs([
+    tab1, tab2, tab3, tab4 = st.tabs([
         "Document ➔ JSON",
         "Data ➔ JSON",
-        "JSON Comparison"
+        "JSON Comparison",
+        "Ask about data"
     ])
 
     with tab1:
@@ -675,6 +799,8 @@ def main():
         render_data_to_json()
     with tab3:
         render_json_comparison()
+    with tab4:
+        render_chat_assistant()
 
 
 if __name__ == "__main__":
