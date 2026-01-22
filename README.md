@@ -21,7 +21,7 @@ Die **Factory-X Audit-App** ist eine Streamlit-basierte Anwendung zur automatisi
 
 Die App ist live verfügbar auf der **Streamlit Community Cloud**:
 
-👉 [**Factory-X Audit-App starten**](https://factory-x-audit-app.streamlit.app)
+👉 [**Factory-X Audit-App starten**](https://factory-x-audit.streamlit.app)
 
 ## Installation (Lokale Entwicklung)
 
