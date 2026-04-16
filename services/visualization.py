@@ -39,12 +39,14 @@ class VisualizationService:
     
     @staticmethod
     def plot_energy_distribution(data: Dict[str, Any]) -> Optional[go.Figure]:
-        """Creates a sunburst chart of energy distribution."""
+        """Creates a diagnostic sunburst chart without balanced main supplies."""
         rows = []
         
         # Electric data
         if "Elektrisch" in data and "Variables" in data["Elektrisch"]:
             for var, metrics in data["Elektrisch"]["Variables"].items():
+                if metrics.get("is_balance_source"):
+                    continue
                 rows.append({
                     "Group": "Electric",
                     "Component": var,
@@ -54,6 +56,8 @@ class VisualizationService:
         # Pneumatic data
         if "Pneumatisch" in data and "Variables" in data["Pneumatisch"]:
             for var, metrics in data["Pneumatisch"]["Variables"].items():
+                if metrics.get("is_balance_source"):
+                    continue
                 rows.append({
                     "Group": "Pneumatic",
                     "Component": var,
@@ -74,11 +78,37 @@ class VisualizationService:
                 "Pneumatic": CHART_COLORS["secondary"] # Use secondary for pneumatic
             }
         )
-        fig = VisualizationService._apply_layout(fig, "Energy Distribution by Component")
+        fig = VisualizationService._apply_layout(fig, "Component Energy Distribution (Diagnostic)")
         fig.update_traces(
             textinfo="label+percent entry",
             insidetextorientation='radial'
         )
+        return fig
+
+    @staticmethod
+    def plot_balanced_energy_pie(data: Dict[str, Any]) -> Optional[go.Figure]:
+        """Creates the non-double-counted electric/pneumatic balance chart."""
+        balance = data.get("balance", {})
+        electric = balance.get("electric_total_kWh")
+        pneumatic = balance.get("pneumatic_total_kWh")
+        if electric is None:
+            electric = data.get("Elektrisch", {}).get("Total Elektrisch", {}).get("total_energy_kWh", 0)
+        if pneumatic is None:
+            pneumatic = data.get("Pneumatisch", {}).get("Total Pneumatisch", {}).get("total_energy_kWh", 0)
+        values = [float(electric or 0), float(pneumatic or 0)]
+        if not any(values):
+            return None
+        fig = px.pie(
+            names=["Electric balance", "Pneumatic balance"],
+            values=values,
+            color=["Electric balance", "Pneumatic balance"],
+            color_discrete_map={
+                "Electric balance": CHART_COLORS["electric"],
+                "Pneumatic balance": CHART_COLORS["secondary"],
+            },
+        )
+        fig = VisualizationService._apply_layout(fig, "Balanced Energy by Medium")
+        fig.update_traces(textinfo="label+percent+value")
         return fig
 
     @staticmethod
@@ -143,4 +173,39 @@ class VisualizationService:
         fig = VisualizationService._apply_layout(fig, f"Energy per Component ({group_name})")
         fig.update_xaxes(gridcolor=CHART_COLORS["grid"])
         return fig
+
+    @staticmethod
+    def plot_multi_energy_comparison(
+        audits_data: Dict[str, Dict[str, Any]],
+        benchmarks_data: Dict[str, Dict[str, Any]],
+    ) -> go.Figure:
+        """Creates the grouped energy comparison chart for multiple selected entries."""
+        rows = []
+        for filename, audit_data in audits_data.items():
+            rows.append({
+                "Source": filename,
+                "Energy (kWh)": audit_data.get("Overall Summary", {}).get("Total Energy (kWh)", 0),
+                "Type": "Audit"
+            })
+        for title, benchmark_data in benchmarks_data.items():
+            benchmark_val = 0.0
+            try:
+                benchmark_val = float(str(benchmark_data.get("energy_data", {}).get("energy_usage", "0")).split()[0])
+            except (ValueError, AttributeError, TypeError):
+                pass
+            rows.append({
+                "Source": title,
+                "Energy (kWh)": benchmark_val,
+                "Type": "Benchmark"
+            })
+
+        df_comp = pd.DataFrame(rows)
+        return px.bar(
+            df_comp,
+            x="Source",
+            y="Energy (kWh)",
+            color="Type",
+            barmode="group",
+            color_discrete_map={"Audit": COLORS["primary"], "Benchmark": COLORS["secondary"]},
+        )
 

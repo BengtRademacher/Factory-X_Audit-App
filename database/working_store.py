@@ -1,13 +1,14 @@
 import json
 from pathlib import Path
 from typing import Dict, Any, Optional, List
-import streamlit as st
+
+from config.settings import settings
 
 class WorkingStore:
     """Verwaltet die aktuellen Messdaten (Working JSONs)."""
     
-    def __init__(self, base_dir: str = "data/working"):
-        self.base_dir = Path(base_dir)
+    def __init__(self, base_dir: Optional[str | Path] = None):
+        self.base_dir = Path(base_dir) if base_dir else settings.WORKING_DIR
         self.base_dir.mkdir(parents=True, exist_ok=True)
         
     def save_audit(self, audit_json: Dict[str, Any], filename: str):

@@ -2,13 +2,14 @@ import json
 import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-import shutil
+
+from config.settings import settings
 
 class LiteratureDB:
     """Verwaltet die dateibasierte Literaturdatenbank."""
     
-    def __init__(self, base_dir: str = "data/literature"):
-        self.base_dir = Path(base_dir)
+    def __init__(self, base_dir: Optional[str | Path] = None):
+        self.base_dir = Path(base_dir) if base_dir else settings.LITERATURE_DIR
         self.json_dir = self.base_dir / "json"
         self.paper_dir = self.base_dir / "papers"
         self.index_path = self.base_dir / "index.json"
@@ -28,6 +29,20 @@ class LiteratureDB:
     def _save_index(self):
         with open(self.index_path, "w", encoding="utf-8") as f:
             json.dump(self.index, f, indent=2, ensure_ascii=False)
+
+    def _storage_path(self, path: Optional[Path]) -> Optional[str]:
+        if path is None:
+            return None
+        try:
+            return str(path.relative_to(settings.BASE_DIR))
+        except ValueError:
+            return str(path)
+
+    def _resolve_path(self, path_value: str) -> Path:
+        path = Path(path_value)
+        if path.is_absolute():
+            return path
+        return settings.BASE_DIR / path
 
     def add_entry(self, paper_json: Dict[str, Any], pdf_file=None, filename: Optional[str] = None):
         """Fügt einen neuen Eintrag zur Datenbank hinzu."""
@@ -60,8 +75,8 @@ class LiteratureDB:
             "title": paper_json.get("paper_metadata", {}).get("title"),
             "authors": paper_json.get("paper_metadata", {}).get("authors", []),
             "date": paper_json.get("paper_metadata", {}).get("publication_date"),
-            "json_path": str(json_path),
-            "pdf_path": str(pdf_path) if pdf_path else None
+            "json_path": self._storage_path(json_path),
+            "pdf_path": self._storage_path(pdf_path)
         }
         
         # Existierenden Eintrag ersetzen oder neu hinzufügen
@@ -77,7 +92,7 @@ class LiteratureDB:
     def get_entry_by_id(self, entry_id: str) -> Optional[Dict[str, Any]]:
         for entry in self.index:
             if entry["id"] == entry_id:
-                with open(entry["json_path"], "r", encoding="utf-8") as f:
+                with open(self._resolve_path(entry["json_path"]), "r", encoding="utf-8") as f:
                     return json.load(f)
         return None
 
@@ -92,10 +107,12 @@ class LiteratureDB:
     def delete_entry(self, entry_id: str):
         entry = next((e for e in self.index if e["id"] == entry_id), None)
         if entry:
-            if os.path.exists(entry["json_path"]):
-                os.remove(entry["json_path"])
-            if entry["pdf_path"] and os.path.exists(entry["pdf_path"]):
-                os.remove(entry["pdf_path"])
+            json_path = self._resolve_path(entry["json_path"])
+            pdf_path = self._resolve_path(entry["pdf_path"]) if entry["pdf_path"] else None
+            if json_path.exists():
+                os.remove(json_path)
+            if pdf_path and pdf_path.exists():
+                os.remove(pdf_path)
             self.index = [e for e in self.index if e["id"] != entry_id]
             self._save_index()
             return True

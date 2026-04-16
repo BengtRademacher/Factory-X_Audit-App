@@ -4,6 +4,14 @@ from typing import Dict, Any, List, Optional, Tuple
 
 class DataParser:
     """Extrahiert und verarbeitet Daten aus Excel- und CSV-Dateien."""
+
+    @staticmethod
+    def _integrate_power(values: np.ndarray, time: np.ndarray) -> float:
+        """Integrate power over time with NumPy 2.x compatibility."""
+        integrate = getattr(np, "trapezoid", None)
+        if integrate is None:
+            integrate = getattr(np, "trapz")
+        return float(integrate(values, time))
     
     @staticmethod
     def read_file(file) -> pd.DataFrame:
@@ -38,7 +46,7 @@ class DataParser:
             std_val = np.std(values)
             
             # W·s → kWh (trapz nutzt die Zeitachse korrekt für unregelmäßige Abtastung)
-            total_energy_kWh = np.trapz(values, time) / 3_600_000.0
+            total_energy_kWh = DataParser._integrate_power(values, time) / 3_600_000.0
             
             details[var] = {
                 "mean": round(float(mean_val), 2),
@@ -53,7 +61,7 @@ class DataParser:
 
         # Group totals
         combined_values = df[valid_vars].sum(axis=1).to_numpy()
-        group_total_energy = np.trapz(combined_values, time) / 3_600_000.0
+        group_total_energy = DataParser._integrate_power(combined_values, time) / 3_600_000.0
         
         group_summary = {
             "mean": round(float(np.mean(combined_values)), 2),

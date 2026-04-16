@@ -42,6 +42,8 @@ class LLMService:
         provider = self.providers.get(name)
         if provider and model:
             provider.model_name = model
+            if name == "openrouter":
+                provider.model_metadata = OpenRouterModelRegistry.get_model_metadata(model)
         return provider
 
     def get_openrouter_models(self, free_only: bool = False, vision_only: bool = False) -> Dict[str, str]:
